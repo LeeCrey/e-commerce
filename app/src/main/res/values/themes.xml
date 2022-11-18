@@ -1,0 +1,28 @@
+<resources>
+    <color name="primaryDark">#4C8BBB</color>
+    <color name="window">#f3f3f3</color>
+    <color name="surface">@color/white</color>
+    <color name="textPrimaryColor">#484e57</color>
+
+    <color name="category">@color/white</color>
+
+    <color name="shimmer_color">@color/teal_200</color>
+
+    <!-- Base application theme. -->
+    <style name="Theme.GPro" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/onPrimary</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/primary</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/onPrimary</item>
+
+        <!-- Customize your theme here. -->
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="android:windowBackground">@color/window</item>
+        <item name="android:textColorPrimary">@color/textPrimaryColor</item>
+    </style>
+</resources>

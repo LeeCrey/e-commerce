@@ -1,0 +1,23 @@
+<resources>
+    <!--  Dark Mode   -->
+    <string-array name="theme_entries">
+        <item>On</item>
+        <item>Off</item>
+        <item>Automatic</item>
+    </string-array>
+    <string-array name="theme_values">
+        <item>on</item>
+        <item>off</item>
+        <item>auto</item>
+    </string-array>
+
+    <!--    Language-->
+    <string-array name="language_entries">
+        <item>@string/english</item>
+        <item>@string/amharic</item>
+    </string-array>
+    <string-array name="language_values">
+        <item>en</item>
+        <item>am</item>
+    </string-array>
+</resources>

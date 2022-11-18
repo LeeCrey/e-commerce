@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
+    tool:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_item_rate_app"
+            android:icon="@drawable/ic_rate"
+            android:title="@string/lbl_rate" />
+
+        <item
+            android:id="@+id/navigation_feedback"
+            android:icon="@drawable/ic_feedback"
+            android:title="@string/lbl_feedback" />
+
+        <item
+            android:id="@+id/menu_item_share"
+            android:icon="@drawable/ic_share"
+            android:title="@string/share" />
+
+    </group>
+</menu>

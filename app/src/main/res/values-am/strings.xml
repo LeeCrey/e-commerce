@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="language">ቋንቋ</string>
+
+    <string name="price_in_ethio">%1$.2f ብር</string>
+
+    <!--  MESSAGES  -->
+    <string name="invalid">ኢሜይል አይመስልም</string>
+    <string name="required">ያስፈልጋል</string>
+    <string name="btn_cancel">አቋርጥ</string>
+    <string name="msg_connection_error">ኮኔክሽን ችግር</string>
+    <string name="msg_not_connected">ስልኮት ከኢንተርነት ጋር አልተገናኘም። እባክዎትን ለመቀጠል ከኢንተርኔት ጋር ያገናኙ።</string>
+
+    <!--  LABELS   -->
+    <string name="btn_connect">አገናኝ</string>
+
+    <string name="lbl_recommended">የሚመከሩ ምርቶች</string>
+    <string name="lbl_see_all">ሁሉንም ይመልከቱ</string>
+
+    <string name="settings">መቼቶች</string>
+
+    <string name="edit_profile">ማስተካከያ</string>
+    <string name="sign_out">ይዉጡ</string>
+
+    <string name="password_error">አሃዙ ከ 5 መብለጥ አለበት።</string>
+    <string name="dont_match">አይመሳሰልም</string>
+</resources>
