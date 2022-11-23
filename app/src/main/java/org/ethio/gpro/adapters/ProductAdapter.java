@@ -35,7 +35,6 @@ public class ProductAdapter extends ListAdapter<Product, ProductViewHolder> {
     private final LayoutInflater inflater;
     private final Activity activity;
     private final Picasso picasso;
-    private final int SHIMMER_SIZE = 8;
     private boolean loadShimmer = true;
     private MainActivityCallBackInterface callBack;
     private boolean calculateWidth;
@@ -85,7 +84,7 @@ public class ProductAdapter extends ListAdapter<Product, ProductViewHolder> {
     @Override
     public int getItemCount() {
         if (loadShimmer) {
-            return SHIMMER_SIZE;
+            return 8;
         }
         return super.getItemCount();
     }
@@ -102,8 +101,8 @@ public class ProductAdapter extends ListAdapter<Product, ProductViewHolder> {
     public void setProducts(final List<Product> list) {
         if (list != null) {
             loadShimmer = false;
-            getCurrentList().clear();
-            notifyDataSetChanged();
+//            getCurrentList().clear();
+            notifyDataSetChanged(); // reset adapter position. If you have better sol_n, welcome
             submitList(list);
         }
     }

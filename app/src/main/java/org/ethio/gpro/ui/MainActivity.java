@@ -28,7 +28,7 @@ import org.ethio.gpro.models.Product;
 import org.ethio.gpro.ui.fragments.ProductFragment;
 
 public class MainActivity extends AppCompatActivity implements MainActivityCallBackInterface {
-    private final boolean loggedIn = true;
+    private final boolean loggedIn = false;
     private NavController navController;
     private BottomNavigationView bottomNavigationView;
     private AppBarConfiguration appBarConfiguration;
