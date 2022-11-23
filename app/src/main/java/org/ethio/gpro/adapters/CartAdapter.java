@@ -31,6 +31,7 @@ public class CartAdapter extends ListAdapter<Cart, CartViewHolder> {
     };
 
     private static final int SHIMMER_SIZE = 6;
+    private static final String TAG = "CartAdapter";
     private final LayoutInflater inflater;
     private final CartCallBackInterface callBackInterface;
     private boolean loadShimmer = true;
@@ -47,14 +48,15 @@ public class CartAdapter extends ListAdapter<Cart, CartViewHolder> {
     public CartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final View view = inflater.inflate(R.layout.layout_cart, parent, false);
 
-        CartViewHolder viewHolder = new CartViewHolder(view);
-
-        if (loadShimmer) {
-            return viewHolder;
-        }
+        final CartViewHolder viewHolder = new CartViewHolder(view);
 
 //        // on click listener...
-        view.setOnClickListener(v -> callBackInterface.onCartClick(getItem(viewHolder.getAdapterPosition())));
+        view.setOnClickListener(v -> {
+            if (!loadShimmer) {
+                final int position = viewHolder.getAdapterPosition();
+                callBackInterface.onCartClick(getItem(position));
+            }
+        });
 
         return viewHolder;
     }
