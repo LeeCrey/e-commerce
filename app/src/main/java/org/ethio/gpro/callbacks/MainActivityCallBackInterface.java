@@ -18,5 +18,5 @@ public interface MainActivityCallBackInterface {
 
     void onProductClick(Product product);
 
-    void setToolBarTitle(String title);
+    boolean getLoggedIn();
 }
