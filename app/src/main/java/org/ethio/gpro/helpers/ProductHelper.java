@@ -56,7 +56,7 @@ public class ProductHelper {
     }
 
     // common in home fragment and search fragment
-    public static void registerSearchFunction(Context context, Menu menu, SearchCallBackInterface callBackInterface) {
+    public static void registerSearchFunctionality(Context context, Menu menu, SearchCallBackInterface callBackInterface) {
         final MenuItem search = menu.findItem(R.id.menu_item_search);
         if (search != null) {
             SearchView searchView = (SearchView) search.getActionView();
