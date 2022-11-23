@@ -80,7 +80,7 @@ public class SearchFragment extends Fragment implements MenuProvider, SearchCall
     public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
         menuInflater.inflate(R.menu.search_menu, menu);
 
-        ProductHelper.registerSearchFunction(requireContext(), menu, this);
+        ProductHelper.registerSearchFunctionality(requireContext(), menu, this);
     }
 
     @Override
