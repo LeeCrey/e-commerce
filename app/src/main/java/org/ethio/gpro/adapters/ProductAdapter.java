@@ -62,13 +62,14 @@ public class ProductAdapter extends ListAdapter<Product, ProductViewHolder> {
         }
 
         final ProductViewHolder viewHolder = new ProductViewHolder(view, picasso);
-        if (loadShimmer) {
-            return viewHolder;
-        }
 
         // on click listener...
         if (callBack != null) {
-            view.setOnClickListener(v -> callBack.onProductClick(getItem(viewHolder.getAdapterPosition())));
+            view.setOnClickListener(v -> {
+                if (!loadShimmer) {
+                    callBack.onProductClick(getItem(viewHolder.getAdapterPosition()));
+                }
+            });
         }
 
         return viewHolder;
