@@ -29,10 +29,12 @@ import org.ethio.gpro.adapters.CategoryAdapter;
 import org.ethio.gpro.adapters.ProductAdapter;
 import org.ethio.gpro.callbacks.MainActivityCallBackInterface;
 import org.ethio.gpro.callbacks.ProductCallBackInterface;
+import org.ethio.gpro.databinding.FragmentHomeBinding;
 import org.ethio.gpro.helpers.ProductHelper;
 import org.ethio.gpro.viewmodels.ProductViewModel;
 
 public class HomeFragment extends Fragment implements MenuProvider, ProductCallBackInterface {
+    private static final String TAG = "HomeFragment";
     private final boolean loggedIn = false;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ProductViewModel viewModel;
@@ -40,7 +42,6 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
     private RecyclerView productRecyclerView, categoryRecyclerView, recommendedRecyclerView;
     private TextView recommended, seeAll, categoriesTitle;
     private NavController navController;
-
     //
     private Runnable categoriesRunnable, productsRunnable, recommendRunnable;
     private Handler customHandler;
@@ -50,9 +51,13 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
     private CategoryAdapter categoryAdapter;
     private ProductAdapter productAdapter, recommendedAdapter;
 
+    private FragmentHomeBinding binding;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        binding = FragmentHomeBinding.inflate(inflater);
+
+        return binding.getRoot();
     }
 
     @Override
@@ -62,12 +67,12 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
         navController = Navigation.findNavController(view);
 
         //
-        recommendedRecyclerView = view.findViewById(R.id.recommended_products);
-        productRecyclerView = view.findViewById(R.id.products_recycler_view);
-        swipeRefreshLayout = view.findViewById(R.id.refresh_layout);
-        recommended = view.findViewById(R.id.title_recommended);
-        seeAll = view.findViewById(R.id.see_all_recommended_products);
-        categoriesTitle = view.findViewById(R.id.category_list_text);
+        recommendedRecyclerView = binding.recommendedProducts;
+        productRecyclerView = binding.productsRecyclerView;
+        swipeRefreshLayout = binding.refreshLayout;
+        recommended = binding.titleRecommended;
+        seeAll = binding.seeAllRecommendedProducts;
+        categoriesTitle = binding.categoryListText;
 
         initCategories(view);
         productAdapter = ProductHelper.initProducts(view, requireActivity(), productRecyclerView, true);
@@ -83,24 +88,9 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
         customHandler = new Handler(handlerThread.getLooper());
 
         // observers
-        viewModel.getCategoryList().observe(getViewLifecycleOwner(), categories -> {
-            if (categories == null) {
-                return;
-            }
-            categoryAdapter.setCategories(categories);
-        });
-        viewModel.getProducts().observe(getViewLifecycleOwner(), products -> {
-            if (products == null) {
-                return;
-            }
-            productAdapter.setProducts(products);
-        });
-        viewModel.getRecommended().observe(getViewLifecycleOwner(), products -> {
-            if (products == null) {
-                return;
-            }
-            recommendedAdapter.setProducts(products);
-        });
+        viewModel.getCategoryList().observe(getViewLifecycleOwner(), categoryAdapter::setCategories);
+        viewModel.getProducts().observe(getViewLifecycleOwner(), productAdapter::setProducts);
+        viewModel.getRecommended().observe(getViewLifecycleOwner(), recommendedAdapter::setProducts);
         viewModel.getSelectedCategoryPosition().observe(getViewLifecycleOwner(), categoryAdapter::setSelectedCategoryPosition);
 
         // menu host
@@ -114,6 +104,8 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
+        binding = null;
 
         /* stop handler  */
         handlerThread.quit();

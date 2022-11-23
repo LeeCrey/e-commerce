@@ -1,5 +1,6 @@
 package org.ethio.gpro.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import org.ethio.gpro.callbacks.CartCallBackInterface;
 import org.ethio.gpro.models.Cart;
 import org.ethio.gpro.viewholders.CartViewHolder;
 
+import java.util.List;
+
 public class CartAdapter extends ListAdapter<Cart, CartViewHolder> {
     private static final DiffUtil.ItemCallback<Cart> CALL_BACK = new DiffUtil.ItemCallback<Cart>() {
         @Override
@@ -26,7 +29,8 @@ public class CartAdapter extends ListAdapter<Cart, CartViewHolder> {
             return oldItem.getName().equals(newItem.getName());
         }
     };
-    private static final int SHIMMER_SIZE = 3;
+
+    private static final int SHIMMER_SIZE = 6;
     private final LayoutInflater inflater;
     private final CartCallBackInterface callBackInterface;
     private boolean loadShimmer = true;
@@ -62,7 +66,25 @@ public class CartAdapter extends ListAdapter<Cart, CartViewHolder> {
         }
     }
 
+    @Override
+    public int getItemCount() {
+        if (loadShimmer) {
+            return SHIMMER_SIZE;
+        }
+        return super.getItemCount();
+    }
+
     public void setLoadShimmer(boolean loadShimmer) {
         this.loadShimmer = loadShimmer;
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setCarts(final List<Cart> list) {
+        if (list == null) {
+            return;
+        }
+        loadShimmer = false;
+        notifyDataSetChanged();
+        submitList(list);
     }
 }

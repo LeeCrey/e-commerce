@@ -23,14 +23,17 @@ public class CartViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindView(Cart item) {
+        stopShimmer();
+
         cartName.setBackground(null);
         cartName.setText(item.getName());
 
-        stopShimmer();
     }
 
     private void stopShimmer() {
         shimmerFrameLayout.stopShimmer();
         shimmerFrameLayout.setShimmer(null);
+
+        cartName.setBackground(null);
     }
 }

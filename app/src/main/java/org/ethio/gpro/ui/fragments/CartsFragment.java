@@ -2,6 +2,7 @@ package org.ethio.gpro.ui.fragments;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,11 +28,18 @@ import org.ethio.gpro.callbacks.CartCallBackInterface;
 import org.ethio.gpro.models.Cart;
 import org.ethio.gpro.viewmodels.CartsViewModel;
 
+import java.util.List;
+
 public class CartsFragment extends Fragment implements MenuProvider, CartCallBackInterface {
     private CartAdapter cartAdapter;
     private CartsViewModel viewModel;
     private RecyclerView recyclerView;
     private NavController navController;
+    private ItemTouchHelper touchHelper;
+
+    private HandlerThread threadHandler;
+    private Handler uiHandler;
+    private Runnable uiRunnable;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,7 +54,7 @@ public class CartsFragment extends Fragment implements MenuProvider, CartCallBac
 
         initRecyclerView(view);
 
-        ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        touchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
@@ -57,29 +65,33 @@ public class CartsFragment extends Fragment implements MenuProvider, CartCallBac
                 viewModel.deleteCart(viewHolder.getAdapterPosition());
             }
         });
-
-        viewModel.getCarts().observe(getViewLifecycleOwner(), carts -> {
-//            if (carts != null) {
-//                new Handler().postDelayed(() -> {
-//                    cartAdapter.setLoadShimmer(false);
-//                    cartAdapter.submitList(carts);
-//                    helper.attachToRecyclerView(recyclerView);
-//                }, 1_000);
-//            }
-        });
+        viewModel.getCarts().observe(getViewLifecycleOwner(), this::submitCarts);
 
         // add menu host
         requireActivity().addMenuProvider(this, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+
+        // thread handler
+        threadHandler = new HandlerThread("uiHandler");
+        threadHandler.start();
+        uiHandler = new Handler(threadHandler.getLooper());
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
 
+        //
+        threadHandler.quit();
+        uiHandler.removeCallbacks(uiRunnable);
+        threadHandler = null;
+        uiHandler = null;
+        uiRunnable = null;
+
         recyclerView = null;
         cartAdapter = null;
         viewModel = null;
         navController = null;
+        touchHelper = null;
     }
 
     @Override
@@ -89,7 +101,8 @@ public class CartsFragment extends Fragment implements MenuProvider, CartCallBac
 
     @Override
     public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-        if (menuItem.getItemId() == R.id.clear_carts) {
+        final int id = menuItem.getItemId();
+        if (id == R.id.clear_carts) {
             viewModel.deleteCarts();
         }
         return false;
@@ -109,7 +122,19 @@ public class CartsFragment extends Fragment implements MenuProvider, CartCallBac
 
         cartAdapter = new CartAdapter(requireActivity(), this);
         cartAdapter.setLoadShimmer(true);
-//        cartAdapter.setHasStableIds(true);
         recyclerView.setAdapter(cartAdapter);
+    }
+
+    private void submitCarts(List<Cart> carts) {
+        if (carts == null) {
+            return;
+        }
+
+        uiRunnable = () -> requireActivity().runOnUiThread(() -> {
+            cartAdapter.setCarts(carts);
+            touchHelper.attachToRecyclerView(recyclerView);
+        });
+
+        uiHandler.postDelayed(uiRunnable, 1_000);
     }
 }

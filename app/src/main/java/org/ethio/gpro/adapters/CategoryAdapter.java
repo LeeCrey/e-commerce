@@ -112,6 +112,10 @@ public class CategoryAdapter extends ListAdapter<Category, CategoryViewHolder> {
 
     @SuppressLint("NotifyDataSetChanged")
     public void setCategories(final List<Category> list) {
+        if (list == null) {
+            return;
+        }
+
         loadShimmer = false;
 //        getCurrentList().clear();
         notifyDataSetChanged(); // reset adapter position
