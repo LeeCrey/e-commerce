@@ -31,9 +31,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
     private NavController navController;
     private BottomNavigationView bottomNavigationView;
     private AppBarConfiguration appBarConfiguration;
-    private Toolbar toolbar;
-
     private InputMethodManager inputMethodManager;
+
+    private final boolean loggedIn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
         final String darkTheme = preferences.getString("theme_mode", "off");
         onThemeChange(darkTheme);
 
-        toolbar = binding.toolBar;
+        final Toolbar toolbar = binding.toolBar;
         setSupportActionBar(toolbar);
 
         bottomNavigationView = binding.bottomNavView;
@@ -95,14 +95,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
             return false;
         });
 
-
         navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
             switch (navDestination.getId()) {
                 case home:
                 case carts:
                 case profile:
                 case search:
-                    showBottomNavView();
+                    if (loggedIn) {
+                        showBottomNavView();
+                    }
                     break;
                 default:
                     hideBottomNavView();
@@ -112,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
 
     @Override
     public boolean onSupportNavigateUp() {
-//        return navController.navigateUp();
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
 
@@ -162,8 +162,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
     }
 
     @Override
-    public void setToolBarTitle(String title) {
-        toolbar.setTitle(title);
+    public boolean getLoggedIn() {
+        return loggedIn;
     }
 
     @Override
