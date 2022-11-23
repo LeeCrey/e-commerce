@@ -25,7 +25,6 @@ public class ProductViewModel extends AndroidViewModel {
     //
     private final MutableLiveData<Integer> selectedCategoryPosition;
 
-
     public ProductViewModel(@NonNull Application application) {
         super(application);
 
@@ -61,6 +60,14 @@ public class ProductViewModel extends AndroidViewModel {
         return oRecommended;
     }
 
+    public void makeProductRequest(String query) {
+        String cat = query.trim();
+        if (cat.isEmpty()) {
+            cat = "all";
+        }
+        repository.searchProduct(cat);
+    }
+
     @Override
     protected void onCleared() {
         super.onCleared();
@@ -68,13 +75,5 @@ public class ProductViewModel extends AndroidViewModel {
         if (null != repository) {
             repository.cancelConnection();
         }
-    }
-
-    public void makeProductRequest(String query) {
-        String cat = query.trim();
-        if (cat.isEmpty()) {
-            cat = "all";
-        }
-        repository.searchProduct(cat);
     }
 }
