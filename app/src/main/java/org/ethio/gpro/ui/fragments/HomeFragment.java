@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,14 +30,10 @@ import org.ethio.gpro.adapters.ProductAdapter;
 import org.ethio.gpro.callbacks.MainActivityCallBackInterface;
 import org.ethio.gpro.callbacks.ProductCallBackInterface;
 import org.ethio.gpro.helpers.ProductHelper;
-import org.ethio.gpro.models.Category;
-import org.ethio.gpro.models.Product;
 import org.ethio.gpro.viewmodels.ProductViewModel;
 
-import java.util.List;
-
 public class HomeFragment extends Fragment implements MenuProvider, ProductCallBackInterface {
-    private final boolean loggedIn = true;
+    private final boolean loggedIn = false;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ProductViewModel viewModel;
     private MainActivityCallBackInterface callBack;
@@ -88,15 +83,32 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
         customHandler = new Handler(handlerThread.getLooper());
 
         // observers
-        viewModel.getCategoryList().observe(getViewLifecycleOwner(), this::submitCategoryList);
-        viewModel.getProducts().observe(getViewLifecycleOwner(), products -> setDataToAdapter(1, products));
-        viewModel.getRecommended().observe(getViewLifecycleOwner(), products -> setDataToAdapter(2, products));
+        viewModel.getCategoryList().observe(getViewLifecycleOwner(), categories -> {
+            if (categories == null) {
+                return;
+            }
+            categoryAdapter.setCategories(categories);
+        });
+        viewModel.getProducts().observe(getViewLifecycleOwner(), products -> {
+            if (products == null) {
+                return;
+            }
+            productAdapter.setProducts(products);
+        });
+        viewModel.getRecommended().observe(getViewLifecycleOwner(), products -> {
+            if (products == null) {
+                return;
+            }
+            recommendedAdapter.setProducts(products);
+        });
         viewModel.getSelectedCategoryPosition().observe(getViewLifecycleOwner(), categoryAdapter::setSelectedCategoryPosition);
 
         // menu host
-        if (!loggedIn) {
+        if (!callBack.getLoggedIn()) {
             requireActivity().addMenuProvider(this, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
         }
+
+        showRecyclerViewsWithDelay();
     }
 
     @Override
@@ -114,9 +126,11 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
         productsRunnable = null;
         categoriesRunnable = null;
 
-        categoriesTitle = null;
         categoryAdapter = null;
+        productAdapter = null;
+        recommendedAdapter = null;
 
+        categoriesTitle = null;
         categoryRecyclerView = null;
         productRecyclerView = null;
         recommendedRecyclerView = null;
@@ -138,13 +152,13 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
 
     @Override
     public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-        if (loggedIn) {
+        if (callBack.getLoggedIn()) {
             return;
         }
 
         menuInflater.inflate(R.menu.home_menu, menu);
 
-        ProductHelper.registerSearchFunction(requireContext(), menu, this);
+        ProductHelper.registerSearchFunctionality(requireContext(), menu, this);
     }
 
     @Override
@@ -154,11 +168,10 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
 
     @Override
     public void productSearch(String query) {
-        Toast.makeText(requireContext(), "THis is from home fragment", Toast.LENGTH_SHORT).show();
+        viewModel.makeProductRequest(query);
     }
 
     // custom
-
     private void initCategories(final View view) {
         LinearLayoutManager linearLayout = new LinearLayoutManager(requireContext());
         linearLayout.setOrientation(RecyclerView.HORIZONTAL);
@@ -170,32 +183,26 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
         categoryRecyclerView.setAdapter(categoryAdapter);
     }
 
-    private void submitCategoryList(List<Category> categories) {
-        if (categories == null) {
-            return;
-        }
+    private void showRecyclerViewsWithDelay() {
+        //categories
         categoriesRunnable = () -> requireActivity().runOnUiThread(() -> {
-            categoryAdapter.setCategories(categories);
+            categoriesTitle.setVisibility(View.VISIBLE);
+            categoryRecyclerView.setVisibility(View.VISIBLE);
         });
-        customHandler.postDelayed(categoriesRunnable, 2_000);
-    }
+        customHandler.postDelayed(categoriesRunnable, 500);
 
-    // flat 1 products in grid, 2 recommended
-    private void setDataToAdapter(final int flag, final List<Product> products) {
-        if (products == null) {
-            return;
-        }
+        // products
+        productsRunnable = () -> requireActivity().runOnUiThread(() -> {
+            productRecyclerView.setVisibility(View.VISIBLE);
+        });
+        customHandler.postDelayed(productsRunnable, 1_000);
 
-        if (flag == 1) {
-            productsRunnable = () -> requireActivity().runOnUiThread(() -> {
-                productAdapter.setProducts(products);
-            });
-            customHandler.postDelayed(productsRunnable, 2_000);
-        } else {
-            recommendRunnable = () -> requireActivity().runOnUiThread(() -> {
-                recommendedAdapter.setProducts(products);
-            });
-            customHandler.postDelayed(recommendRunnable, 3_000);
-        }
+        // recommended
+        recommendRunnable = () -> requireActivity().runOnUiThread(() -> {
+            seeAll.setVisibility(View.VISIBLE);
+            recommended.setVisibility(View.VISIBLE);
+            recommendedRecyclerView.setVisibility(View.VISIBLE);
+        });
+        customHandler.postDelayed(recommendRunnable, 2_000);
     }
 }
