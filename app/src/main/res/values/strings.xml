@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">Gebeya</string>
+    <string name="base_url" translatable="false">https://5e8f-197-156-80-12.eu.ngrok.io/</string>
 
     <string name="language">Language</string>
     <string name="price_in_ethio">%1$.2f ETB</string>
@@ -15,7 +16,6 @@
     <string name="passwordConfirmation" translatable="false">passwordConfirmation</string>
 
     <string name="password_instruction">Enter the email associated with your account and we\'ll send account reset instruction to your email.</string>
-
 
     <!--  MESSAGES  -->
     <string name="invalid">Invalid</string>
