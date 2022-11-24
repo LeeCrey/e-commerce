@@ -54,16 +54,16 @@ public class ApplicationHelper {
         }
     }
 
-    public static boolean checkConnection(Activity context, Context local) {
+    public static boolean checkConnection(Activity context) {
         boolean available = ApplicationHelper.isInternetAvailable(context);
         if (!available) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle(local.getString(R.string.msg_connection_error))
-                    .setMessage(local.getString(R.string.msg_not_connected))
-                    .setPositiveButton(local.getString(R.string.btn_connect), (dialog, which) -> {
+            builder.setTitle(context.getString(R.string.msg_connection_error))
+                    .setMessage(context.getString(R.string.msg_not_connected))
+                    .setPositiveButton(context.getString(R.string.btn_connect), (dialog, which) -> {
                         context.startActivity(new Intent(Settings.ACTION_SETTINGS));
                     })
-                    .setNegativeButton(local.getString(R.string.btn_cancel), (dialog, which) -> context.onBackPressed());
+                    .setNegativeButton(context.getString(R.string.btn_cancel), (dialog, which) -> context.onBackPressed());
             builder.create().show();
         }
 
