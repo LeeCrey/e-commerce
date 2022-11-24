@@ -76,7 +76,7 @@ public class UnlockFragment extends Fragment {
         buttonSend.setOnClickListener(v -> {
             callBackInterface.closeKeyBoard();
             if (ApplicationHelper.isInternetAccessGranted(requireContext())) {
-                if (ApplicationHelper.checkConnection((Activity) requireContext(), requireContext())) {
+                if (ApplicationHelper.checkConnection(requireActivity())) {
                     loading.setVisibility(View.VISIBLE);
                     buttonSend.setEnabled(false);
                     viewModel.sendInstruction(Objects.requireNonNull(email.getText()).toString(), isUnlock);
