@@ -1,10 +1,12 @@
 package org.ethio.gpro.viewmodels.account;
 
+import android.app.Application;
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import org.ethio.gpro.helpers.InputHelper;
 import org.ethio.gpro.helpers.PreferenceHelper;
@@ -15,29 +17,18 @@ import org.ethio.gpro.repositories.SessionsRepository;
 
 
 // view model for both login and logout
-public class SessionsViewModel extends ViewModel {
+public class SessionsViewModel extends AndroidViewModel {
+    private final MutableLiveData<FormErrors> mFormErrors;
+    private final MutableLiveData<SessionResponse> mSessionResult;
     private SessionsRepository repository;
     private String email, password;
 
-    private MutableLiveData<FormErrors> mFormErrors;
-    private MutableLiveData<SessionResponse> mSessionResult;
-
-    public void initForLogin() {
-        if (initForLogout()) {
-            return;
-        }
-
-        mFormErrors = new MutableLiveData<>();
-    }
-
-    public boolean initForLogout() {
-        if (mSessionResult != null) {
-            return true;
-        }
+    public SessionsViewModel(@NonNull Application application) {
+        super(application);
 
         repository = new SessionsRepository();
+        mFormErrors = new MutableLiveData<>();
         mSessionResult = repository.getSessionResult();
-        return false;
     }
 
     public LiveData<SessionResponse> getSessionResult() {
@@ -56,7 +47,7 @@ public class SessionsViewModel extends ViewModel {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(@NonNull String password) {
         this.password = password;
     }
 
@@ -80,7 +71,7 @@ public class SessionsViewModel extends ViewModel {
     }
 
     // Login
-    public void sendLoginRequest() {
+    public void login() {
         Customer customer = new Customer().setCredentials(email, password);
         repository.login(customer);
     }
@@ -93,13 +84,17 @@ public class SessionsViewModel extends ViewModel {
     }
     /*END LOGOUT PART*/
 
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-
+    private void cancelConnection() {
         if (repository != null) {
             repository.cancelConnection();
             repository = null;
         }
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+
+        cancelConnection();
     }
 }
