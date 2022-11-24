@@ -156,7 +156,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
         final Bundle args = new Bundle();
         args.putInt(ProductFragment.PRODUCT_ID, product.getId());
         args.putString(ProductFragment.PRODUCT_NAME, product.getName());
-        args.putBoolean(ProductFragment.LOGGED_IN, true);
         navController.navigate(R.id.show_product, args);
     }
 
