@@ -12,11 +12,9 @@
 
         <TextView
             android:id="@+id/description"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/input_margin"
-            android:text="@string/large_text"
-            app:layout_constraintBottom_toTopOf="@id/add_to_cart"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -36,20 +34,19 @@
         <TextView
             android:id="@+id/title_recommended"
             style="@style/TextAppearance.MaterialComponents.Headline6"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/input_margin"
+            android:layout_marginStart="@dimen/app_margin"
             android:layout_marginTop="6dp"
             android:padding="8dp"
             android:text="@string/lbl_related_products"
-            app:layout_constraintBottom_toTopOf="@+id/recommended_products"
-            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/add_to_cart" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recommended_products"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:nestedScrollingEnabled="false"
