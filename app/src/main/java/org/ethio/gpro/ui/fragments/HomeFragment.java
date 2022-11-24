@@ -75,8 +75,8 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
         categoriesTitle = binding.categoryListText;
 
         initCategories(view);
-        productAdapter = ProductHelper.initProducts(view, requireActivity(), productRecyclerView, true);
-        recommendedAdapter = ProductHelper.initProducts(view, requireActivity(), recommendedRecyclerView, false);
+        productAdapter = ProductHelper.initProducts(requireActivity(), productRecyclerView, true, false);
+        recommendedAdapter = ProductHelper.initProducts(requireActivity(), recommendedRecyclerView, false, false);
 
         // event list...
         swipeRefreshLayout.setOnRefreshListener(() -> swipeRefreshLayout.setRefreshing(false));
