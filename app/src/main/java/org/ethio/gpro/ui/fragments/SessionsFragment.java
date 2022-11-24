@@ -1,16 +1,20 @@
 package org.ethio.gpro.ui.fragments;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -19,12 +23,18 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import org.ethio.gpro.R;
 import org.ethio.gpro.callbacks.MainActivityCallBackInterface;
+import org.ethio.gpro.helpers.ApplicationHelper;
+import org.ethio.gpro.viewmodels.account.SessionsViewModel;
+
+import java.util.Objects;
 
 public class SessionsFragment extends Fragment {
     private MainActivityCallBackInterface callBackInterface;
     private NavController navController;
     private TextInputEditText email, password;
     private TextInputLayout emailLayout, passwordLayout;
+
+    private SessionsViewModel sessionsViewModel;
 
     @Nullable
     @Override
@@ -34,10 +44,10 @@ public class SessionsFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
         callBackInterface = (MainActivityCallBackInterface) requireActivity();
         navController = Navigation.findNavController(view);
+
+        sessionsViewModel = new ViewModelProvider(this).get(SessionsViewModel.class);
 
         email = view.findViewById(R.id.email);
         password = view.findViewById(R.id.password);
@@ -59,15 +69,43 @@ public class SessionsFragment extends Fragment {
             navController.navigate(R.id.from_login_to_unlock, arg);
         });
         signIn.setOnClickListener(v -> {
-            // logic
+            callBackInterface.closeKeyBoard();
+            callBackInterface.checkPermission();
+            if (ApplicationHelper.checkConnection(requireActivity())) {
+                v.setEnabled(false);
+                sessionsViewModel.login();
+            }
         });
-    }
+        afterInputChanged();
 
-    @Override
-    public void onResume() {
-        super.onResume();
+        // observers
+        sessionsViewModel.getSessionResult().observe(getViewLifecycleOwner(), sessionResult -> {
+            if (sessionResult == null) {
+                return;
+            }
 
-        callBackInterface.hideBottomNavView();
+            if (sessionResult.getOkay()) {
+                Toast.makeText(requireContext(), sessionResult.getMessage(), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(requireContext(), sessionResult.getError(), Toast.LENGTH_SHORT).show();
+                signIn.setEnabled(true);
+            }
+        });
+        sessionsViewModel.getFormErrors().observe(getViewLifecycleOwner(), errors -> {
+            if (errors == null) {
+                return;
+            }
+
+            email.setError(errors.getEmailError());
+            if (null == errors.getPasswordError()) {
+                passwordLayout.setEndIconMode(TextInputLayout.END_ICON_PASSWORD_TOGGLE);
+            } else {
+                passwordLayout.setEndIconMode(TextInputLayout.END_ICON_NONE);
+            }
+            password.setError(errors.getPasswordError());
+
+            signIn.setEnabled(errors.isRegistrationValid());
+        });
     }
 
     @Override
@@ -80,5 +118,30 @@ public class SessionsFragment extends Fragment {
         password = null;
         navController = null;
         callBackInterface = null;
+        sessionsViewModel = null;
+    }
+
+    private void afterInputChanged() {
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String emailValue = Objects.requireNonNull(email.getText()).toString();
+                String passwordValue = Objects.requireNonNull(password.getText()).toString();
+                sessionsViewModel.loginInputChanged(requireContext(), emailValue, passwordValue);
+            }
+        };
+
+        email.addTextChangedListener(textWatcher);
+        password.addTextChangedListener(textWatcher);
     }
 }
