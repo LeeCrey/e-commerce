@@ -1,5 +1,7 @@
 package org.ethio.gpro.repositories;
 
+import android.app.Application;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
@@ -8,6 +10,10 @@ import org.ethio.gpro.models.Customer;
 import org.ethio.gpro.models.responses.SessionResponse;
 import org.ethio.gpro.repositories.api.account.SessionsApi;
 import org.ethio.gpro.repositories.retrofit.RetrofitConnectionUtil;
+
+import java.io.IOException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,13 +24,13 @@ public class SessionsRepository {
     private Call<SessionResponse> sessionResultCall;
     private SessionsApi api;
 
-    public SessionsRepository() {
+    public SessionsRepository(@NonNull Application application) {
         if (mSessionResult != null) {
             return;
         }
 
         mSessionResult = new MutableLiveData<>();
-        api = RetrofitConnectionUtil.getRetrofitInstance(null).create(SessionsApi.class);
+        api = RetrofitConnectionUtil.getRetrofitInstance(application).create(SessionsApi.class);
     }
 
     public MutableLiveData<SessionResponse> getSessionResult() {
@@ -49,7 +55,17 @@ public class SessionsRepository {
 
             @Override
             public void onFailure(@NonNull Call<SessionResponse> call, @NonNull Throwable t) {
-                mSessionResult.postValue(getErrorMessage(t.getMessage()));
+                SessionResponse resp = null;
+                if (t instanceof SocketTimeoutException) {
+                    resp = getErrorMessage("Server timeout.");
+                } else if (t instanceof UnknownHostException) {
+                    resp = getErrorMessage("Unknown host.");
+                } else if (call.isCanceled()) {
+                    resp = getErrorMessage("Cancelled connection.");
+                } else {
+                    resp = getErrorMessage(t.getMessage());
+                }
+                mSessionResult.postValue(resp);
             }
         });
     }
@@ -68,7 +84,8 @@ public class SessionsRepository {
 
             @Override
             public void onFailure(@NonNull Call<SessionResponse> call, @NonNull Throwable t) {
-                mSessionResult.postValue(getErrorMessage(t.getMessage()));
+                String a = String.valueOf(t instanceof IOException);
+                mSessionResult.postValue(getErrorMessage(a));
             }
         });
     }

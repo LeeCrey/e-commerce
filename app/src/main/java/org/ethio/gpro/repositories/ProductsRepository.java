@@ -30,8 +30,8 @@ public class ProductsRepository {
     private final MutableLiveData<List<Product>> mRecommended;
     private Call<List<Category>> categoryCall;
 
-    public ProductsRepository(Application application) {
-        api = RetrofitConnectionUtil.getRetrofitInstance(null).create(ProductApi.class);
+    public ProductsRepository(@NonNull Application application) {
+        api = RetrofitConnectionUtil.getRetrofitInstance(application).create(ProductApi.class);
         mProducts = new MutableLiveData<>();
         mRecommended = new MutableLiveData<>();
 

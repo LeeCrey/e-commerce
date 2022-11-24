@@ -35,6 +35,8 @@ public class SessionsFragment extends Fragment {
     private TextInputLayout emailLayout, passwordLayout;
 
     private SessionsViewModel sessionsViewModel;
+    private Button signIn;
+    private ProgressBar loading;
 
     @Nullable
     @Override
@@ -54,10 +56,10 @@ public class SessionsFragment extends Fragment {
         passwordLayout = view.findViewById(R.id.password_layout);
         emailLayout = view.findViewById(R.id.email_layout);
         Button signUp = view.findViewById(R.id.btn_sign_up);
-        Button signIn = view.findViewById(R.id.btn_sign_in);
+        signIn = view.findViewById(R.id.btn_sign_in);
+        loading = view.findViewById(R.id.progress_circular);
         TextView textView = view.findViewById(R.id.unlock_account);
         TextView forgotPassword = view.findViewById(R.id.forgot_password);
-        ProgressBar loading = view.findViewById(R.id.progress_circular);
 
         // event list...
         signUp.setOnClickListener(v -> navController.navigate(R.id.login_to_sign_up));
@@ -72,7 +74,7 @@ public class SessionsFragment extends Fragment {
             callBackInterface.closeKeyBoard();
             callBackInterface.checkPermission();
             if (ApplicationHelper.checkConnection(requireActivity())) {
-                v.setEnabled(false);
+                setUiPlace(false);
                 sessionsViewModel.login();
             }
         });
@@ -88,7 +90,7 @@ public class SessionsFragment extends Fragment {
                 Toast.makeText(requireContext(), sessionResult.getMessage(), Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(requireContext(), sessionResult.getError(), Toast.LENGTH_SHORT).show();
-                signIn.setEnabled(true);
+                setUiPlace(true);
             }
         });
         sessionsViewModel.getFormErrors().observe(getViewLifecycleOwner(), errors -> {
@@ -119,6 +121,18 @@ public class SessionsFragment extends Fragment {
         navController = null;
         callBackInterface = null;
         sessionsViewModel = null;
+
+        signIn = null;
+        loading = null;
+    }
+
+    private void setUiPlace(boolean status) {
+        signIn.setEnabled(status);
+        loading.setVisibility(status ? View.GONE : View.VISIBLE);
+        passwordLayout.setEndIconMode(status ? TextInputLayout.END_ICON_PASSWORD_TOGGLE : TextInputLayout.END_ICON_NONE);
+
+        email.setEnabled(status);
+        password.setEnabled(status);
     }
 
     private void afterInputChanged() {

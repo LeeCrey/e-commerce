@@ -1,10 +1,12 @@
 package org.ethio.gpro.viewmodels.account;
 
+import android.app.Application;
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import org.ethio.gpro.R;
 import org.ethio.gpro.helpers.InputHelper;
@@ -16,19 +18,17 @@ import org.ethio.gpro.repositories.RegistrationsRepository;
 import java.util.Map;
 
 
-public class RegistrationsViewModel extends ViewModel {
-    private MutableLiveData<RegistrationResponse> mRegistrationResponse;
-    private MutableLiveData<FormErrors> mFormState;
-    private RegistrationsRepository repository;
+public class RegistrationsViewModel extends AndroidViewModel {
+    private final MutableLiveData<RegistrationResponse> mRegistrationResponse;
+    private final MutableLiveData<FormErrors> mFormState;
+    private final RegistrationsRepository repository;
     private Map<String, String> map;
 
-    public void initForRegistration() {
-        if (null != repository) {
-            return;
-        }
+    public RegistrationsViewModel(@NonNull Application application) {
+        super(application);
 
         mFormState = new MutableLiveData<>();
-        repository = new RegistrationsRepository();
+        repository = new RegistrationsRepository(application);
         mRegistrationResponse = repository.getRegistrationResponse();
     }
 

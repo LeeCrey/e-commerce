@@ -1,5 +1,7 @@
 package org.ethio.gpro.repositories;
 
+import android.app.Application;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
@@ -22,13 +24,13 @@ public class RegistrationsRepository {
     private RegistrationsApi api;
     private Call<RegistrationResponse> apiCall;
 
-    public RegistrationsRepository() {
+    public RegistrationsRepository(@NonNull Application application) {
         if (null != mRegResponse) {
             return;
         }
 
         mRegResponse = new MutableLiveData<>();
-        api = RetrofitConnectionUtil.getRetrofitInstance(null).create(RegistrationsApi.class);
+        api = RetrofitConnectionUtil.getRetrofitInstance(application).create(RegistrationsApi.class);
     }
 
     public MutableLiveData<RegistrationResponse> getRegistrationResponse() {

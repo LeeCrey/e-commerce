@@ -20,7 +20,7 @@ public class InstructionRepository {
     private Call<InstructionsResponse> instructionsResponseCall;
 
     public InstructionRepository(Application application) {
-        api = RetrofitConnectionUtil.getRetrofitInstance(null).create(InstructionsApi.class);
+        api = RetrofitConnectionUtil.getRetrofitInstance(application).create(InstructionsApi.class);
         mInstructionResponse = new MutableLiveData<>();
     }
 

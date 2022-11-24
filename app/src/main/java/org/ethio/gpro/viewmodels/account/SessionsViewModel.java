@@ -26,7 +26,7 @@ public class SessionsViewModel extends AndroidViewModel {
     public SessionsViewModel(@NonNull Application application) {
         super(application);
 
-        repository = new SessionsRepository();
+        repository = new SessionsRepository(application);
         mFormErrors = new MutableLiveData<>();
         mSessionResult = repository.getSessionResult();
     }
