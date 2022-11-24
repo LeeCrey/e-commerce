@@ -72,13 +72,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
             NavigationUI.setupWithNavController(navigationView, navController);
         }
 
-        // permissions
-        if (!ApplicationHelper.isInternetAccessGranted(this)) {
-            ApplicationHelper.requestInternetAccessPermission(this);
-        }
-        if (!ApplicationHelper.isLocationAccessGranted(this)) {
-            ApplicationHelper.requestLocationAccessPermission(this);
-        }
+        checkPermission();
 
         // event listener ...
         navigationView.setNavigationItemSelectedListener(item -> {
@@ -162,6 +156,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
     @Override
     public boolean getLoggedIn() {
         return loggedIn;
+    }
+
+    @Override
+    public void checkPermission() {
+        // permissions
+        if (!ApplicationHelper.isInternetAccessGranted(this)) {
+            ApplicationHelper.requestInternetAccessPermission(this);
+        }
+        if (!ApplicationHelper.isLocationAccessGranted(this)) {
+            ApplicationHelper.requestLocationAccessPermission(this);
+        }
     }
 
     @Override
