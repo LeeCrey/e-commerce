@@ -31,7 +31,7 @@ public class ProductHelper {
     }
 
     // common in HomeFragment and Product fragment
-    public static ProductAdapter initProducts(View view, FragmentActivity activity, RecyclerView recyclerView, boolean useGridView) {
+    public static ProductAdapter initProducts(FragmentActivity activity, RecyclerView recyclerView, boolean useGridView, boolean recommended) {
         MainActivityCallBackInterface callBack = (MainActivityCallBackInterface) activity;
 
         recyclerView.setNestedScrollingEnabled(false);
@@ -74,5 +74,9 @@ public class ProductHelper {
                 }
             });
         }
+    }
+
+    public static ProductAdapter initRecommendedProducts(FragmentActivity activity, RecyclerView recyclerView) {
+        return initProducts(activity, recyclerView, false, true);
     }
 }
