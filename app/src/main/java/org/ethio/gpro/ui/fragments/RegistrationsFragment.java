@@ -20,7 +20,9 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.ethio.gpro.R;
+import org.ethio.gpro.callbacks.MainActivityCallBackInterface;
 import org.ethio.gpro.databinding.FragmentRegistrationsBinding;
+import org.ethio.gpro.helpers.ApplicationHelper;
 import org.ethio.gpro.models.FormErrors;
 import org.ethio.gpro.viewmodels.account.RegistrationsViewModel;
 
@@ -36,6 +38,8 @@ public class RegistrationsFragment extends Fragment {
     private RegistrationsViewModel viewModel;
     private ProgressBar loading;
 
+    private MainActivityCallBackInterface callBackInterface;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,6 +51,8 @@ public class RegistrationsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(this).get(RegistrationsViewModel.class);
+
+        callBackInterface = (MainActivityCallBackInterface) requireActivity();
 
         signUp = binding.signUp;
         firstName = binding.firstName;
@@ -61,9 +67,12 @@ public class RegistrationsFragment extends Fragment {
 
         // event list ...
         signUp.setOnClickListener(v -> {
-            v.setEnabled(false);
-            viewModel.signUp(requireContext());
-            setStatusForPlaceholders(false);
+            callBackInterface.checkPermission();
+            if (ApplicationHelper.checkConnection(requireActivity())) {
+                v.setEnabled(false);
+                viewModel.signUp(requireContext());
+                setStatusForPlaceholders(false);
+            }
         });
         makeTextWatcher();
 
