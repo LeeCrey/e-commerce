@@ -8,8 +8,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import org.ethio.gpro.async_tasks.CartsBootAsyncTask;
-import org.ethio.gpro.async_tasks.CategoryBootAsyncTask;
+import org.ethio.gpro.tasks.CartsBootAsyncTask;
+import org.ethio.gpro.tasks.CategoryBootAsyncTask;
 import org.ethio.gpro.data.dao.CartDao;
 import org.ethio.gpro.data.dao.CategoryDao;
 import org.ethio.gpro.data.dao.ProductDao;
