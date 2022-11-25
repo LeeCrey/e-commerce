@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Spinner;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,7 +34,7 @@ public class RegistrationsFragment extends Fragment {
     private Button signUp;
     private FragmentRegistrationsBinding binding;
     private RegistrationsViewModel viewModel;
-    private Spinner loading;
+    private ProgressBar loading;
 
     @Nullable
     @Override
@@ -55,14 +55,20 @@ public class RegistrationsFragment extends Fragment {
         password = binding.password;
         passwordConfirmation = binding.passwordConfirmation;
         passwordLayout = binding.passwordLayout;
+        loading = binding.progressCircular;
 
         binding.termsAndConditions.setMovementMethod(LinkMovementMethod.getInstance());
 
         // event list ...
+        signUp.setOnClickListener(v -> {
+            v.setEnabled(false);
+            viewModel.signUp(requireContext());
+            setStatusForPlaceholders(false);
+        });
         makeTextWatcher();
 
         // observers
-        viewModel.getRegistrationResponse().observe(this, registrationResponse -> {
+        viewModel.getRegistrationResponse().observe(getViewLifecycleOwner(), registrationResponse -> {
             if (null == registrationResponse) {
                 return;
             }
@@ -71,7 +77,14 @@ public class RegistrationsFragment extends Fragment {
             if (registrationResponse.getOkay()) {
                 Toast.makeText(requireContext(), "success", Toast.LENGTH_SHORT).show();
             } else {
-                showFormError(registrationResponse.getErrors());
+                if (null != registrationResponse.getMessage()) {
+                    Toast.makeText(requireContext(), registrationResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    loading.setVisibility(View.GONE);
+                    signUp.setEnabled(true);
+                } else {
+                    setStatusForPlaceholders(true);
+                    showFormError(registrationResponse.getErrors());
+                }
             }
         });
         viewModel.getFormState().observe(getViewLifecycleOwner(), this::showFormError);
@@ -123,6 +136,10 @@ public class RegistrationsFragment extends Fragment {
     }
 
     private void showFormError(FormErrors errors) {
+        if (errors == null) {
+            return;
+        }
+
         if (null != errors.getFirstNameError()) {
             firstName.setError(errors.getFirstNameError());
         }
@@ -138,6 +155,7 @@ public class RegistrationsFragment extends Fragment {
         if (null != errors.getPasswordConfirmationError()) {
             passwordConfirmation.setError(errors.getPasswordConfirmationError());
         }
+        signUp.setEnabled(errors.isRegistrationValid());
         setStatusForPlaceholders(true);
     }
 
