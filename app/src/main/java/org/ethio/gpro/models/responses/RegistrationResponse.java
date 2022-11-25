@@ -26,6 +26,10 @@ public class RegistrationResponse {
         return message;
     }
 
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     public void setError(String message) {
         this.message = message;
     }
