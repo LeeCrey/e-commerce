@@ -4,8 +4,8 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
-import org.ethio.gpro.async_tasks.CartAsyncClear;
-import org.ethio.gpro.async_tasks.CartAsyncDelete;
+import org.ethio.gpro.tasks.CartAsyncClear;
+import org.ethio.gpro.tasks.CartAsyncDelete;
 import org.ethio.gpro.data.base.AppDataBase;
 import org.ethio.gpro.data.dao.CartDao;
 import org.ethio.gpro.models.Cart;
