@@ -66,7 +66,8 @@ public class RegistrationsViewModel extends AndroidViewModel {
                     .setCredentials(
                             map.get(context.getString(R.string.email)),
                             map.get(context.getString(R.string.password)))
-                    .setFullName(map.get(context.getString(R.string.firstName)),
+                    .setFullName(
+                            map.get(context.getString(R.string.firstName)),
                             map.get(context.getString(R.string.lastName)));
             customer.setPasswordConfirmation(map.get(context.getString(R.string.passwordConfirmation)));
             repository.signUp(customer);
