@@ -32,7 +32,7 @@ public class SessionsFragment extends Fragment {
     private MainActivityCallBackInterface callBackInterface;
     private NavController navController;
     private TextInputEditText email, password;
-    private TextInputLayout emailLayout, passwordLayout;
+    private TextInputLayout passwordLayout;
 
     private SessionsViewModel sessionsViewModel;
     private Button signIn;
@@ -54,7 +54,6 @@ public class SessionsFragment extends Fragment {
         email = view.findViewById(R.id.email);
         password = view.findViewById(R.id.password);
         passwordLayout = view.findViewById(R.id.password_layout);
-        emailLayout = view.findViewById(R.id.email_layout);
         Button signUp = view.findViewById(R.id.btn_sign_up);
         signIn = view.findViewById(R.id.btn_sign_in);
         loading = view.findViewById(R.id.progress_circular);
@@ -114,7 +113,6 @@ public class SessionsFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
 
-        emailLayout = null;
         passwordLayout = null;
         email = null;
         password = null;
