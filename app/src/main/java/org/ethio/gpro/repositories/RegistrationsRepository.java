@@ -48,7 +48,7 @@ public class RegistrationsRepository {
                 RegistrationResponse lastResponse = null;
                 if (ResponseCode.unProcessableEntity(response.code())) {
                     // retrofit does not deserialize string into object when response code is not successful, so
-                    // we have to do manually
+                    // we have to do it manually
                     ResponseBody errorBody = response.errorBody();
                     if (null != errorBody) {
                         try {
@@ -67,7 +67,7 @@ public class RegistrationsRepository {
             public void onFailure(@NonNull Call<RegistrationResponse> call, @NonNull Throwable t) {
                 RegistrationResponse response = new RegistrationResponse();
                 response.setOkay(false);
-                response.setError(t.getMessage());
+                response.setError("Something went wrong.");
                 mRegResponse.postValue(response);
             }
         });
@@ -113,9 +113,7 @@ public class RegistrationsRepository {
 
     public void cancelConnection() {
         if (null != apiCall) {
-            if (!(apiCall.isExecuted() || apiCall.isCanceled())) {
-                apiCall.cancel();
-            }
+            apiCall.cancel();
         }
     }
 }
