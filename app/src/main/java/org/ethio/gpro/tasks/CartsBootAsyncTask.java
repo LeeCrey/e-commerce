@@ -1,4 +1,4 @@
-package org.ethio.gpro.async_tasks;
+package org.ethio.gpro.tasks;
 
 import android.os.AsyncTask;
 

@@ -1,21 +1,21 @@
-package org.ethio.gpro.async_tasks;
+package org.ethio.gpro.tasks;
 
 import android.os.AsyncTask;
 
 import org.ethio.gpro.data.dao.CartDao;
 import org.ethio.gpro.models.Cart;
 
-public class CartAsyncDelete extends AsyncTask<Cart, Void, Void> {
+public class CartInsertAsyncTask extends AsyncTask<Cart, Void, Void> {
     private final CartDao cartDao;
 
-    public CartAsyncDelete(CartDao cartDao) {
+    public CartInsertAsyncTask(CartDao cartDao) {
         this.cartDao = cartDao;
     }
 
     @Override
     protected Void doInBackground(Cart... carts) {
         Cart cart = carts[0];
-        cartDao.removeCart(cart);
+        cartDao.insertCart(cart);
 
         return null;
     }
