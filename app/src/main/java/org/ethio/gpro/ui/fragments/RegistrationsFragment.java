@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -39,6 +41,7 @@ public class RegistrationsFragment extends Fragment {
     private ProgressBar loading;
 
     private MainActivityCallBackInterface callBackInterface;
+    private NavController navController;
 
     @Nullable
     @Override
@@ -51,6 +54,7 @@ public class RegistrationsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(this).get(RegistrationsViewModel.class);
+        navController = Navigation.findNavController(view);
 
         callBackInterface = (MainActivityCallBackInterface) requireActivity();
 
@@ -82,9 +86,10 @@ public class RegistrationsFragment extends Fragment {
                 return;
             }
 
-            //
             if (registrationResponse.getOkay()) {
                 Toast.makeText(requireContext(), "success", Toast.LENGTH_SHORT).show();
+                navController.navigateUp();
+                navController.navigateUp();
             } else {
                 if (null != registrationResponse.getMessage()) {
                     Toast.makeText(requireContext(), registrationResponse.getMessage(), Toast.LENGTH_SHORT).show();
@@ -112,6 +117,8 @@ public class RegistrationsFragment extends Fragment {
         password = null;
         passwordConfirmation = null;
         passwordLayout = null;
+
+        navController = null;
     }
 
     private void makeTextWatcher() {
