@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -49,6 +51,8 @@ public class UnlockFragment extends Fragment {
         final TextView confirm = view.findViewById(R.id.confirm_account);
 
         callBackInterface = (MainActivityCallBackInterface) requireContext();
+        NavController navController = Navigation.findNavController(view);
+
         InstructionsViewModel viewModel = new ViewModelProvider(this).get(InstructionsViewModel.class);
 
         //
@@ -85,9 +89,7 @@ public class UnlockFragment extends Fragment {
                 ApplicationHelper.requestInternetAccessPermission((Activity) requireContext());
             }
         });
-        confirm.setOnClickListener(v -> {
-
-        });
+        confirm.setOnClickListener(v -> navController.navigate(R.id.unlock_to_navigation_confirmation));
     }
 
     @Override
