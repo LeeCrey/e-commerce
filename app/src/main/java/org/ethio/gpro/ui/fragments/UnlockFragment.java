@@ -46,7 +46,7 @@ public class UnlockFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        final TextView confirm = view.findViewById(R.id.confirm_account);
 
         callBackInterface = (MainActivityCallBackInterface) requireContext();
         InstructionsViewModel viewModel = new ViewModelProvider(this).get(InstructionsViewModel.class);
@@ -84,6 +84,9 @@ public class UnlockFragment extends Fragment {
             } else {
                 ApplicationHelper.requestInternetAccessPermission((Activity) requireContext());
             }
+        });
+        confirm.setOnClickListener(v -> {
+
         });
     }
 
