@@ -135,6 +135,9 @@
             android:name="isUnlock"
             app:argType="boolean"
             android:defaultValue="true" />
+        <action
+            android:id="@+id/unlock_to_navigation_confirmation"
+            app:destination="@id/navigation_confirmation" />
     </fragment>
     <fragment
         android:id="@+id/navigation_cart"
@@ -147,8 +150,8 @@
             app:nullable="true" />
     </fragment>
     <fragment
-        android:id="@+id/confirmation"
+        android:id="@+id/navigation_confirmation"
         android:name="org.ethio.gpro.Confirmation"
-        android:label="fragment_confirmation"
+        android:label="@string/lbl_confirm"
         tools:layout="@layout/fragment_confirmation" />
 </navigation>
