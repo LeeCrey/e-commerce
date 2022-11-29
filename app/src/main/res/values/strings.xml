@@ -164,5 +164,6 @@
     <string name="add_to_cart">Add to Cart</string>
     <string name="lbl_related_products">Related Products</string>
     <string name="product_image_place_h">product image</string>
+    <string name="feedback_msg">Please provide your feedback here</string>
 
 </resources>
