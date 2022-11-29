@@ -166,5 +166,6 @@
     <string name="product_image_place_h">product image</string>
     <string name="feedback_msg">Please provide your feedback here</string>
     <string name="terms_and_condition">By signing up, you\'re agree to our <a href="https://t.me/lee_crey">Terms &amp; Conditions</a> and <a href="https://googl.come"> Privacy Policy.</a> </string>
+    <string name="lbl_confirm">Confirm Account</string>
 
 </resources>
