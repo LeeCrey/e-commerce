@@ -155,7 +155,7 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_confirmation"
-        android:name="org.ethio.gpro.Confirmation"
+        android:name="org.ethio.gpro.ui.fragments.ConfirmationFragment"
         android:label="@string/lbl_confirm"
-        tools:layout="@layout/fragment_confirmation" />
+        tools:layout="@layout/fragment_instruction" />
 </navigation>
