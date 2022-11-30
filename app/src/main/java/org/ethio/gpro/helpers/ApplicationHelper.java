@@ -43,17 +43,6 @@ public class ApplicationHelper {
         return connected;
     }
 
-    public static void initToolBar(AppCompatActivity context, Toolbar toolbar, boolean supportNavHome) {
-        context.setSupportActionBar(toolbar);
-        if (supportNavHome) {
-            ActionBar actionBar = context.getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.setDisplayHomeAsUpEnabled(supportNavHome);
-                toolbar.setPadding(0, 0, 16, 0);
-            }
-        }
-    }
-
     public static boolean checkConnection(Activity context) {
         boolean available = ApplicationHelper.isInternetAvailable(context);
         if (!available) {
