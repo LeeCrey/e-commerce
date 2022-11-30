@@ -158,4 +158,9 @@
         android:name="org.ethio.gpro.ui.fragments.ConfirmationFragment"
         android:label="@string/lbl_confirm"
         tools:layout="@layout/fragment_instruction" />
+    <fragment
+        android:id="@+id/confirmFragment"
+        android:name="org.ethio.gpro.ConfirmFragment"
+        android:label="fragment_confirm"
+        tools:layout="@layout/fragment_confirm" />
 </navigation>
