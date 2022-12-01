@@ -62,13 +62,13 @@ public class SessionsFragment extends Fragment {
 
         // event list...
         signUp.setOnClickListener(v -> navController.navigate(R.id.login_to_sign_up));
-        textView.setOnClickListener(v -> navController.navigate(R.id.from_login_to_unlock));
-        forgotPassword.setOnClickListener(v -> {
-            Bundle arg = new Bundle();
-            arg.putString("lable_name", getString(R.string.lbl_password));
-            arg.putBoolean(UnlocksFragment.EXTRA, false);
-            navController.navigate(R.id.from_login_to_unlock, arg);
-        });
+//        textView.setOnClickListener(v -> navController.navigate(R.id.from_login_to_unlock));
+//        forgotPassword.setOnClickListener(v -> {
+//            Bundle arg = new Bundle();
+//            arg.putString("lable_name", getString(R.string.lbl_password));
+//            arg.putBoolean(UnlocksFragment.EXTRA, false);
+//            navController.navigate(R.id.from_login_to_unlock, arg);
+//        });
         signIn.setOnClickListener(v -> {
             callBackInterface.closeKeyBoard();
             callBackInterface.checkPermission();
@@ -87,6 +87,7 @@ public class SessionsFragment extends Fragment {
 
             if (sessionResult.getOkay()) {
                 Toast.makeText(requireContext(), sessionResult.getMessage(), Toast.LENGTH_SHORT).show();
+                navController.navigateUp();
             } else {
                 Toast.makeText(requireContext(), sessionResult.getError(), Toast.LENGTH_SHORT).show();
                 setUiPlace(true);
