@@ -109,52 +109,12 @@
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/to_right" />
-        <action
-            android:id="@+id/from_login_to_unlock"
-            app:destination="@id/navigation_unlock"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right" />
     </fragment>
     <fragment
         android:id="@+id/navigation_sign_up"
         android:name="org.ethio.gpro.ui.fragments.account.RegistrationsFragment"
         android:label="@string/sign_up"
         tools:layout="@layout/fragment_registrations" />
-    <fragment
-        android:id="@+id/navigation_unlock"
-        android:name="org.ethio.gpro.ui.fragments.account.UnlocksFragment"
-        android:label="{lable_name}"
-        tools:layout="@layout/fragment_instruction">
-        <argument
-            android:name="lable_name"
-            android:defaultValue="Unlock"
-            app:argType="string" />
-        <argument
-            android:name="isUnlock"
-            android:defaultValue="true"
-            app:argType="boolean" />
-        <action
-            android:id="@+id/unlock_to_navigation_confirmation"
-            app:destination="@id/navigation_confirmation"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right" />
-        <argument
-            android:name="unlockToken"
-            app:argType="string"
-            app:nullable="true" />
-        <argument
-            android:name="rootUrl"
-            app:argType="string"
-            app:nullable="true" />
-        <deepLink
-            android:id="@+id/deepLink2"
-            android:autoVerify="true"
-            app:uri="https://ethio-gebeya.com/customers/unlock?unlock_token={unlockToken}" />
-    </fragment>
     <fragment
         android:id="@+id/navigation_cart"
         android:name="org.ethio.gpro.ui.fragments.CartFragment"
@@ -164,18 +124,5 @@
             android:name="shopName"
             app:argType="string"
             app:nullable="true" />
-    </fragment>
-    <fragment
-        android:id="@+id/navigation_confirmation"
-        android:name="org.ethio.gpro.ui.fragments.account.ConfirmationsFragment"
-        android:label="@string/lbl_confirm"
-        tools:layout="@layout/fragment_instruction">
-        <argument
-            android:name="confirmationToken"
-            app:argType="string"
-            app:nullable="true" />
-        <deepLink
-            android:id="@+id/deepLink"
-            app:uri="https://ethio-gebeya.com/customers/confirmation?confirmation_token={confirmationToken}" />
     </fragment>
 </navigation>
