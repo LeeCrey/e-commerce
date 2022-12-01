@@ -1,4 +1,4 @@
-package org.ethio.gpro.ui.fragments;
+package org.ethio.gpro.ui.fragments.account;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -66,7 +66,7 @@ public class SessionsFragment extends Fragment {
         forgotPassword.setOnClickListener(v -> {
             Bundle arg = new Bundle();
             arg.putString("lable_name", getString(R.string.lbl_password));
-            arg.putBoolean(UnlockFragment.EXTRA, false);
+            arg.putBoolean(UnlocksFragment.EXTRA, false);
             navController.navigate(R.id.from_login_to_unlock, arg);
         });
         signIn.setOnClickListener(v -> {
