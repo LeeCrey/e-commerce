@@ -24,15 +24,17 @@ import org.ethio.gpro.R;
 import org.ethio.gpro.callbacks.MainActivityCallBackInterface;
 import org.ethio.gpro.databinding.ActivityMainBinding;
 import org.ethio.gpro.helpers.ApplicationHelper;
+import org.ethio.gpro.helpers.PreferenceHelper;
 import org.ethio.gpro.models.Product;
 import org.ethio.gpro.ui.fragments.ProductFragment;
 
 public class MainActivity extends AppCompatActivity implements MainActivityCallBackInterface {
-    private final boolean loggedIn = false;
     private NavController navController;
     private BottomNavigationView bottomNavigationView;
     private AppBarConfiguration appBarConfiguration;
     private InputMethodManager inputMethodManager;
+
+    private String authToken = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
         final ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        authToken = PreferenceHelper.getAuthToken(this);
         inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         // theme
@@ -94,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
                 case carts:
                 case profile:
                 case search:
-                    if (loggedIn) {
+                    if (authToken != null) {
                         showBottomNavView();
                     }
                     break;
@@ -154,8 +157,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
     }
 
     @Override
-    public boolean getLoggedIn() {
-        return loggedIn;
+    public String getAuthorizationToken() {
+        return authToken;
     }
 
     @Override

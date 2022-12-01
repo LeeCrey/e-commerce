@@ -18,7 +18,7 @@ public interface MainActivityCallBackInterface {
 
     void onProductClick(Product product);
 
-    boolean getLoggedIn();
+    String getAuthorizationToken();
 
     void checkPermission();
 }

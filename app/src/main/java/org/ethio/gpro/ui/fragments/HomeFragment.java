@@ -94,7 +94,7 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
         viewModel.getSelectedCategoryPosition().observe(getViewLifecycleOwner(), categoryAdapter::setSelectedCategoryPosition);
 
         // menu host
-        if (!callBack.getLoggedIn()) {
+        if (callBack.getAuthorizationToken() == null) {
             requireActivity().addMenuProvider(this, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
         }
 
@@ -144,7 +144,7 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
 
     @Override
     public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-        if (callBack.getLoggedIn()) {
+        if (callBack.getAuthorizationToken() != null) {
             return;
         }
 
