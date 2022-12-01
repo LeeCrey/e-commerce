@@ -7,7 +7,7 @@
     android:background="@color/surface"
     android:orientation="vertical"
     android:padding="@dimen/app_margin"
-    tools:context=".ui.fragments.SessionsFragment">
+    tools:context=".ui.fragments.account.SessionsFragment">
 
     <TextView
         android:id="@+id/welcome_msg"
