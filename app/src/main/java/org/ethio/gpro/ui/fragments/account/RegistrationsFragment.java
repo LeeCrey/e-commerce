@@ -1,4 +1,4 @@
-package org.ethio.gpro.ui.fragments;
+package org.ethio.gpro.ui.fragments.account;
 
 import android.os.Bundle;
 import android.text.Editable;
