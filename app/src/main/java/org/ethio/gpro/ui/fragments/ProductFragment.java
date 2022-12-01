@@ -43,7 +43,7 @@ public class ProductFragment extends Fragment {
         productViewModel.getRecommended().observe(getViewLifecycleOwner(), adapter::setProducts);
 
         Button addToCart = view.findViewById(R.id.add_to_cart);
-        if (callBackInterface.getLoggedIn()) {
+        if (callBackInterface.getAuthorizationToken() != null) {
             addToCart.setVisibility(View.VISIBLE);
         }
     }
