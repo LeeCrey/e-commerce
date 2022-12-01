@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
     private BottomNavigationView bottomNavigationView;
     private AppBarConfiguration appBarConfiguration;
     private InputMethodManager inputMethodManager;
-
     private String authToken = null;
 
     @Override
