@@ -7,7 +7,7 @@
     android:background="@color/surface"
     android:orientation="vertical"
     android:paddingHorizontal="16dp"
-    tools:context=".ui.fragments.RegistrationsFragment">
+    tools:context=".ui.fragments.account.RegistrationsFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/firstNameLayout"
