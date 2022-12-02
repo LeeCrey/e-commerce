@@ -3,6 +3,8 @@ package org.ethio.gpro.models.responses;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SessionResponse {
+    private String authToken;
+
     @JsonProperty("okay")
     private Boolean okay;
 
@@ -30,5 +32,13 @@ public class SessionResponse {
 
     public void setError(String error) {
         this.error = error;
+    }
+
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
     }
 }
