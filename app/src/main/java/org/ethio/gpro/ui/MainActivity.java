@@ -161,6 +161,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
     }
 
     @Override
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
+    }
+
+    @Override
     public void checkPermission() {
         // permissions
         if (!ApplicationHelper.isInternetAccessGranted(this)) {
