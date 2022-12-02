@@ -3,6 +3,7 @@ package org.ethio.gpro.repositories;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import org.ethio.gpro.helpers.ResponseCode;
@@ -22,6 +23,7 @@ import retrofit2.Response;
 public class SessionsRepository {
     private static final String TAG = "SessionsRepository";
     private MutableLiveData<SessionResponse> mSessionResult;
+    private MutableLiveData<SessionResponse> mLogoutResult;
     private Call<SessionResponse> sessionResultCall;
     private SessionsApi api;
 
@@ -31,17 +33,20 @@ public class SessionsRepository {
         }
 
         mSessionResult = new MutableLiveData<>();
+        mLogoutResult = new MutableLiveData<>();
         api = RetrofitConnectionUtil.getRetrofitInstance(application).create(SessionsApi.class);
     }
 
-    public MutableLiveData<SessionResponse> getSessionResult() {
+    public LiveData<SessionResponse> getLogoutResult() {
+        return mLogoutResult;
+    }
+
+    public LiveData<SessionResponse> getSessionResult() {
         return mSessionResult;
     }
 
     public void login(Customer customer) {
-        if (null != sessionResultCall) {
-            sessionResultCall.cancel();
-        }
+        cancelConnection();
 
         sessionResultCall = api.login(customer);
         sessionResultCall.enqueue(new Callback<SessionResponse>() {
@@ -76,21 +81,23 @@ public class SessionsRepository {
     }
 
     public void logout(String authorizationToken) {
-        if (null != sessionResultCall) {
-            sessionResultCall.cancel();
-        }
+        cancelConnection();
 
         sessionResultCall = api.logout(authorizationToken);
         sessionResultCall.enqueue(new Callback<SessionResponse>() {
             @Override
             public void onResponse(@NonNull Call<SessionResponse> call, @NonNull Response<SessionResponse> response) {
-                mSessionResult.postValue(response.body());
+                if (response.isSuccessful()) {
+                    mLogoutResult.postValue(response.body());
+                } else {
+                    mLogoutResult.postValue(getErrorMessage("Un-authorized"));
+                }
             }
 
             @Override
             public void onFailure(@NonNull Call<SessionResponse> call, @NonNull Throwable t) {
                 String a = String.valueOf(t instanceof IOException);
-                mSessionResult.postValue(getErrorMessage(a));
+                mLogoutResult.postValue(getErrorMessage(a));
             }
         });
     }

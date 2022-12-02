@@ -19,7 +19,8 @@ import org.ethio.gpro.repositories.SessionsRepository;
 // view model for both login and logout
 public class SessionsViewModel extends AndroidViewModel {
     private final MutableLiveData<FormErrors> mFormErrors;
-    private final MutableLiveData<SessionResponse> mSessionResult;
+    private final LiveData<SessionResponse> mSessionResult;
+    private final LiveData<SessionResponse> mLogoutResult;
     private SessionsRepository repository;
     private String email, password;
 
@@ -29,6 +30,7 @@ public class SessionsViewModel extends AndroidViewModel {
         repository = new SessionsRepository(application);
         mFormErrors = new MutableLiveData<>();
         mSessionResult = repository.getSessionResult();
+        mLogoutResult = repository.getLogoutResult();
     }
 
     public LiveData<SessionResponse> getSessionResult() {
@@ -71,6 +73,11 @@ public class SessionsViewModel extends AndroidViewModel {
     }
 
     // Login
+
+    public LiveData<SessionResponse> getLogoutResult() {
+        return mLogoutResult;
+    }
+
     public void login() {
         Customer customer = new Customer().setCredentials(email, password);
         repository.login(customer);
