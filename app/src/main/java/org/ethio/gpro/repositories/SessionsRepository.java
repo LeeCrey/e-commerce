@@ -20,6 +20,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SessionsRepository {
+    private static final String TAG = "SessionsRepository";
     private MutableLiveData<SessionResponse> mSessionResult;
     private Call<SessionResponse> sessionResultCall;
     private SessionsApi api;
@@ -49,7 +50,11 @@ public class SessionsRepository {
                 if (ResponseCode.isUnAuthorized(response.code())) {
                     mSessionResult.postValue(getErrorMessage("Incorrect email or password"));
                 } else {
-                    mSessionResult.postValue(response.body());
+                    SessionResponse sessionResponse = response.body();
+                    if (sessionResponse != null) {
+                        sessionResponse.setAuthToken(response.headers().get("Authorization"));
+                    }
+                    mSessionResult.postValue(sessionResponse);
                 }
             }
 
