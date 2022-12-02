@@ -13,14 +13,19 @@ import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import org.ethio.gpro.R;
+import org.ethio.gpro.callbacks.MainActivityCallBackInterface;
+import org.ethio.gpro.viewmodels.account.SessionsViewModel;
 
 
 public class ProfileFragment extends Fragment implements MenuProvider {
     private NavController navController;
+    private MainActivityCallBackInterface callBackInterface;
+    private SessionsViewModel sessionsViewModel;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -31,7 +36,22 @@ public class ProfileFragment extends Fragment implements MenuProvider {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         navController = Navigation.findNavController(view);
+        sessionsViewModel = new ViewModelProvider(this).get(SessionsViewModel.class);
+        callBackInterface = (MainActivityCallBackInterface) requireActivity();
 
+        //observers
+        sessionsViewModel.getLogoutResult().observe(getViewLifecycleOwner(), sessionResponse -> {
+            if (sessionResponse == null) {
+                return;
+            }
+
+            if (sessionResponse.getOkay()) {
+                callBackInterface.logout();
+            } else {
+                // when expired token
+                callBackInterface.logout();
+            }
+        });
         // menu host
         requireActivity().addMenuProvider(this, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
@@ -41,6 +61,8 @@ public class ProfileFragment extends Fragment implements MenuProvider {
         super.onDestroyView();
 
         navController = null;
+        sessionsViewModel = null;
+        callBackInterface = null;
     }
 
     @Override
@@ -50,8 +72,11 @@ public class ProfileFragment extends Fragment implements MenuProvider {
 
     @Override
     public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-        if (menuItem.getItemId() == R.id.from_profile_to_settings) {
+        final int id = menuItem.getItemId();
+        if (id == R.id.from_profile_to_settings) {
             navController.navigate(R.id.from_profile_to_settings);
+        } else if (id == R.id.logout) {
+            sessionsViewModel.logout(requireActivity());
         }
         return false;
 
