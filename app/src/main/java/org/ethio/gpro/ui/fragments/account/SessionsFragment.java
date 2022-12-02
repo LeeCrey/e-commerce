@@ -24,6 +24,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import org.ethio.gpro.R;
 import org.ethio.gpro.callbacks.MainActivityCallBackInterface;
 import org.ethio.gpro.helpers.ApplicationHelper;
+import org.ethio.gpro.helpers.PreferenceHelper;
 import org.ethio.gpro.viewmodels.account.SessionsViewModel;
 
 import java.util.Objects;
@@ -86,7 +87,8 @@ public class SessionsFragment extends Fragment {
             }
 
             if (sessionResult.getOkay()) {
-                Toast.makeText(requireContext(), sessionResult.getMessage(), Toast.LENGTH_SHORT).show();
+                PreferenceHelper.setAuthToken(requireActivity(), sessionResult.getAuthToken());
+                callBackInterface.setAuthToken(sessionResult.getAuthToken());
                 navController.navigateUp();
             } else {
                 Toast.makeText(requireContext(), sessionResult.getError(), Toast.LENGTH_SHORT).show();
