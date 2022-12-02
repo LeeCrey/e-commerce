@@ -20,5 +20,7 @@ public interface MainActivityCallBackInterface {
 
     String getAuthorizationToken();
 
+    void setAuthToken(String authToken);
+
     void checkPermission();
 }
