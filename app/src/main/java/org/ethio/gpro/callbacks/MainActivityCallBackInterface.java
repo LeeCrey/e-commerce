@@ -23,4 +23,6 @@ public interface MainActivityCallBackInterface {
     void setAuthToken(String authToken);
 
     void checkPermission();
+
+    void logout();
 }

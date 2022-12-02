@@ -177,6 +177,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
     }
 
     @Override
+    public void logout() {
+        PreferenceHelper.clearPref(this);
+        authToken = null;
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
 
