@@ -180,6 +180,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
     public void logout() {
         PreferenceHelper.clearPref(this);
         authToken = null;
+        navController.navigateUp();
+        hideBottomNavView();
     }
 
     @Override
