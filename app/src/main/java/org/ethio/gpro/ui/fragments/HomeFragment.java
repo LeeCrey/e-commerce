@@ -53,8 +53,7 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
 
     private FragmentHomeBinding binding;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater);
 
         return binding.getRoot();
@@ -79,7 +78,10 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
         recommendedAdapter = ProductHelper.initProducts(requireActivity(), recommendedRecyclerView, false, false);
 
         // event list...
-        swipeRefreshLayout.setOnRefreshListener(() -> swipeRefreshLayout.setRefreshing(false));
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            viewModel.makeProductRequest(categoryAdapter.getSelectedCategoryName());
+            swipeRefreshLayout.setRefreshing(false);
+        });
         seeAll.setOnClickListener(callBack::openRecommended);
 
         // handlers
@@ -91,7 +93,7 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
         viewModel.getCategoryList().observe(getViewLifecycleOwner(), categoryAdapter::setCategories);
         viewModel.getProducts().observe(getViewLifecycleOwner(), productAdapter::setProducts);
         viewModel.getRecommended().observe(getViewLifecycleOwner(), recommendedAdapter::setProducts);
-        viewModel.getSelectedCategoryPosition().observe(getViewLifecycleOwner(), categoryAdapter::setSelectedCategoryPosition);
+        viewModel.getSelectedCategoryPosition().observe(getViewLifecycleOwner(), this::sendProductRequest);
 
         // menu host
         if (callBack.getAuthorizationToken() == null) {
@@ -164,6 +166,15 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
     }
 
     // custom
+    private void sendProductRequest(Integer position) {
+        String cat = "all";
+        if (position != -1) {
+            categoryAdapter.setSelectedCategoryPosition(position);
+            cat = categoryAdapter.getSelectedCategoryName();
+        }
+        viewModel.makeProductRequest(cat);
+    }
+
     private void initCategories(final View view) {
         LinearLayoutManager linearLayout = new LinearLayoutManager(requireContext());
         linearLayout.setOrientation(RecyclerView.HORIZONTAL);
