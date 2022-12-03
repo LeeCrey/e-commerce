@@ -23,7 +23,7 @@
     <string name="sign_out">ይዉጡ</string>
 
     <string name="password_error">አሃዙ ከ 5 መብለጥ አለበት።</string>
-    <string name="dont_match">አይመሳሰልም</string>
+    <string name="don_t_match">አይመሳሰልም</string>
 
     <string name="terms_and_condition">አዲስ መለያ ስፈጥሩ፣ የእኛን <a href="https://t.me/lee_crey">ውሎች፣ ሁኔታዎች</a> እና <a href="https://googl.come"> የግላዊ መመሪያ</a> ተስማምተዋል።</string>
 </resources>
