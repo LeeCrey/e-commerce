@@ -1,6 +1,5 @@
 package org.ethio.gpro.adapters;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -19,8 +18,6 @@ import org.ethio.gpro.callbacks.ProductCallBackInterface;
 import org.ethio.gpro.models.Category;
 import org.ethio.gpro.viewholders.CategoryViewHolder;
 
-import java.util.List;
-
 public class CategoryAdapter extends ListAdapter<Category, CategoryViewHolder> {
     private static final String TAG = "CategoryAdapter";
     private static final DiffUtil.ItemCallback<Category> DIFF_CALC_CALLBACK = new DiffUtil.ItemCallback<Category>() {
@@ -34,10 +31,9 @@ public class CategoryAdapter extends ListAdapter<Category, CategoryViewHolder> {
             return oldItem.getName().equals(newItem.getName()) && (oldItem.isSelected() == newItem.isSelected());
         }
     };
-    private final int SHIMMER_SIZE = 9;
     private final LayoutInflater inflater;
     private final Context context;
-    private boolean loadShimmer = true;
+    private final boolean loadShimmer = true;
     private int selectedCategoryPosition;
     private ProductCallBackInterface callBackInterface;
 
@@ -57,12 +53,6 @@ public class CategoryAdapter extends ListAdapter<Category, CategoryViewHolder> {
         final CategoryViewHolder vh = new CategoryViewHolder(view);
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) view.getLayoutParams();
 
-        if (loadShimmer) {
-            params.width = 50;
-            return vh;
-        }
-        params.width = RecyclerView.LayoutParams.WRAP_CONTENT;
-
         // event ...
         final MaterialCardView cardView = (MaterialCardView) view;
 //        cardView.setOnLongClickListener(v -> callBackInterface.onCategorySelected(vh.getAdapterPosition()));
@@ -73,21 +63,27 @@ public class CategoryAdapter extends ListAdapter<Category, CategoryViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
-        if (!loadShimmer) {
-            holder.bindView(getItem(position), context);
-        }
+        holder.bindView(getItem(position), context);
     }
 
-    @Override
-    public int getItemCount() {
-        if (loadShimmer) {
-            return SHIMMER_SIZE;
-        }
-        return super.getItemCount();
+    public void setCallBack(ProductCallBackInterface callBack) {
+        callBackInterface = callBack;
+    }
+
+    public String getSelectedCategoryName() {
+        return getItem(selectedCategoryPosition).getName();
+    }
+
+    public int getSelectedCategoryPosition() {
+        return selectedCategoryPosition;
     }
 
     public void setSelectedCategoryPosition(final @NonNull Integer position) {
         if (position == -1) {
+            return;
+        }
+
+        if (selectedCategoryPosition == position) {
             return;
         }
 
@@ -104,21 +100,5 @@ public class CategoryAdapter extends ListAdapter<Category, CategoryViewHolder> {
         notifyItemChanged(selectedCategoryPosition, oldCategory);
 
         selectedCategoryPosition = position;
-    }
-
-    public void setCallBack(ProductCallBackInterface callBack) {
-        callBackInterface = callBack;
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    public void setCategories(final List<Category> list) {
-        if (list == null) {
-            return;
-        }
-
-        loadShimmer = false;
-//        getCurrentList().clear();
-        notifyDataSetChanged(); // reset adapter position
-        submitList(list);
     }
 }
