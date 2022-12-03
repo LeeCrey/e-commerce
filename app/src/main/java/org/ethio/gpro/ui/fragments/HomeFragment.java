@@ -90,7 +90,7 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
         customHandler = new Handler(handlerThread.getLooper());
 
         // observers
-        viewModel.getCategoryList().observe(getViewLifecycleOwner(), categoryAdapter::setCategories);
+        viewModel.getCategoryList().observe(getViewLifecycleOwner(), categoryAdapter::submitList);
         viewModel.getProducts().observe(getViewLifecycleOwner(), productAdapter::setProducts);
         viewModel.getRecommended().observe(getViewLifecycleOwner(), recommendedAdapter::setProducts);
         viewModel.getSelectedCategoryPosition().observe(getViewLifecycleOwner(), this::sendProductRequest);
