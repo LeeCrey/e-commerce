@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
     private NavController navController;
     private BottomNavigationView bottomNavigationView;
     private AppBarConfiguration appBarConfiguration;
-    private InputMethodManager inputMethodManager;
     private String authToken = null;
 
     @Override
@@ -43,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
         setContentView(binding.getRoot());
 
         authToken = PreferenceHelper.getAuthToken(this);
-        inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         // theme
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -139,12 +137,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
 
     @Override
     public void closeKeyBoard() {
-        try {
-            // hide keyboard
-            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-        } catch (Exception ignore) {
-            // when a keyboard is already closed
+        // hide keyboard
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        View view = getCurrentFocus();
+        if (view == null) {
+            view = new View(this);
         }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override
@@ -182,12 +181,5 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
         authToken = null;
         navController.navigateUp();
         hideBottomNavView();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        inputMethodManager = null;
     }
 }
