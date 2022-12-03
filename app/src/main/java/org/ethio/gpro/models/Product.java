@@ -23,6 +23,9 @@ public class Product {
     @JsonProperty("id")
     private Integer id;
 
+    @JsonProperty("quantity")
+    private Integer quantity;
+
     @ColumnInfo(name = "name")
     @JsonProperty("name")
     private String name;
@@ -41,7 +44,7 @@ public class Product {
 
     //    @ColumnInfo(name = "images")
     @Ignore
-    @JsonProperty("images")
+    @JsonProperty("photos")
     private List<String> images;
 
     @ColumnInfo(name = "origin")
@@ -176,5 +179,13 @@ public class Product {
     @JsonIgnore
     public void setImages(List<String> images) {
         this.images = images;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 }
