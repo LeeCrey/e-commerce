@@ -1,6 +1,6 @@
 package org.ethio.gpro.repositories.api;
 
-import org.ethio.gpro.models.ProductResponse;
+import org.ethio.gpro.models.responses.ProductResponse;
 
 import retrofit2.Call;
 import retrofit2.http.DELETE;
