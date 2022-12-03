@@ -104,6 +104,10 @@ public class ProductAdapter extends ListAdapter<Product, ProductViewHolder> {
             return;
         }
 
+        if (list.isEmpty()) {
+            return;
+        }
+
         try {
             Product p = getItem(0);
         } catch (Exception ex) {
