@@ -97,12 +97,19 @@ public class ProductAdapter extends ListAdapter<Product, ProductViewHolder> {
         this.callBack = callBack;
     }
 
+    //    @SuppressLint("NotifyDataSetChanged")
     @SuppressLint("NotifyDataSetChanged")
     public void setProducts(final List<Product> list) {
-        if (list != null) {
-            loadShimmer = false;
-//            getCurrentList().clear();
+        if (list == null) {
+            return;
+        }
+
+        try {
+            Product p = getItem(0);
+        } catch (Exception ex) {
             notifyDataSetChanged(); // reset adapter position. If you have better sol_n, welcome
+        } finally {
+            loadShimmer = false;
             submitList(list);
         }
     }
