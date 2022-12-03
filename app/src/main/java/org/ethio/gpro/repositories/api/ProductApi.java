@@ -1,7 +1,7 @@
 package org.ethio.gpro.repositories.api;
 
 import org.ethio.gpro.models.Category;
-import org.ethio.gpro.models.ProductResponse;
+import org.ethio.gpro.models.responses.ProductResponse;
 
 import java.util.List;
 
@@ -26,5 +26,5 @@ public interface ProductApi {
     // controllers/products_controller.rb#method => categories
     @Headers({"accept: application/json"})
     @GET("categories")
-    Call<List<Category>> categories(@Header("If-None-Match") String etag);
+    Call<List<Category>> categories();
 }
