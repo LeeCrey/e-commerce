@@ -139,7 +139,10 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
 
     @Override
     public boolean onCategorySelected(int position) {
-        viewModel.setSelectedCategoryPosition(position);
+        // when ever re-click
+        if (position != categoryAdapter.getSelectedCategoryPosition()) {
+            viewModel.setSelectedCategoryPosition(position);
+        }
 
         return true;
     }
