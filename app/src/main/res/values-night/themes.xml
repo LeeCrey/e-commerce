@@ -4,6 +4,7 @@
     <color name="surface">#333a40</color>
     <color name="textPrimaryColor">@color/white</color>
     <color name="primary">#4fc3f7</color>
+    <color name="drawerHeaderBackground">#1b91cf </color>
 
     <color name="category">#36474f</color>
     <!-- Base application theme. -->
