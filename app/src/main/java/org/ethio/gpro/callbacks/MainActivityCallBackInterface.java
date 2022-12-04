@@ -2,6 +2,7 @@ package org.ethio.gpro.callbacks;
 
 import android.view.View;
 
+import org.ethio.gpro.models.Customer;
 import org.ethio.gpro.models.Product;
 
 public interface MainActivityCallBackInterface {
@@ -25,4 +26,6 @@ public interface MainActivityCallBackInterface {
     void checkPermission();
 
     void logout();
+
+    void setCurrentUser();
 }
