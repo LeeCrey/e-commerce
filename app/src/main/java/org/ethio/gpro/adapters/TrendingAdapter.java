@@ -15,6 +15,7 @@ import com.squareup.picasso.Picasso;
 import org.ethio.gpro.R;
 import org.ethio.gpro.models.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TrendingAdapter extends PagerAdapter {
@@ -27,8 +28,16 @@ public class TrendingAdapter extends PagerAdapter {
 
     public void updateList(List<Product> products) {
         if (!products.isEmpty()) {
-            trendingProducts = products;
+            if (trendingProducts == null) {
+                trendingProducts = new ArrayList<>();
+            } else {
+                trendingProducts.clear();
+            }
+            trendingProducts.addAll(products);
             notifyDataSetChanged();
+//            ProductDiffCalc diffCallback = new ProductDiffCalc(trendingProducts, products);
+//            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+//            diffResult.dispatchUpdatesTo(this);
         }
     }
 
