@@ -79,13 +79,13 @@
         android:label="{productName}"
         tools:layout="@layout/fragment_product">
         <argument
-            android:name="productId"
-            android:defaultValue="-1"
-            app:argType="integer" />
-        <argument
             android:name="productName"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="productId"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
     <fragment
         android:id="@+id/recommendedProductFragment"
