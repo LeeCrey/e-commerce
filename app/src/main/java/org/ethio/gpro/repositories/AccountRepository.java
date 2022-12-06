@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import org.ethio.gpro.models.AccountResponse;
+import org.ethio.gpro.models.responses.AccountResponse;
 import org.ethio.gpro.repositories.api.AccountApi;
 import org.ethio.gpro.repositories.retrofit.RetrofitConnectionUtil;
 

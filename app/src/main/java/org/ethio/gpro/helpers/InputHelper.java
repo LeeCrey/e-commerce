@@ -78,6 +78,6 @@ public class InputHelper {
             return null;
         }
 
-        return context.getString(R.string.dont_match);
+        return context.getString(R.string.don_t_match);
     }
 }

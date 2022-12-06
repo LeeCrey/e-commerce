@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import java.util.HashMap;
 
 public class PreferenceHelper {
+    private static final String fullName = "full_name";
     private static final String EMAIL = "email";
     private static final String PWD = "password";
     private static final String TOKEN = "auth_token";
@@ -67,5 +68,18 @@ public class PreferenceHelper {
         SharedPreferences.Editor editor = pref.edit();
         editor.clear();
         editor.apply();
+    }
+
+
+    public static void setFullName(Context context, String fName) {
+        SharedPreferences pref = context.getSharedPreferences(PREFS_FILE, PREFS_MODE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(fullName, fName);
+        editor.apply();
+    }
+
+    public static String getFullName(Context context) {
+        SharedPreferences pref = context.getSharedPreferences(PREFS_FILE, PREFS_MODE);
+        return pref.getString(fullName, null);
     }
 }

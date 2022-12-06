@@ -10,24 +10,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 // non null
-@Entity(tableName = "categories_tbl")
 @JsonRootName("category")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Category {
-    @ColumnInfo(name = "id", index = true)
-    @PrimaryKey
     @JsonProperty("id")
-    private Integer id;
+    private Integer categoryId;
 
-    @ColumnInfo(name = "priority", index = true, defaultValue = "2")
     @JsonProperty("priority")
     private Integer priority;
 
-    @ColumnInfo(name = "name", index = true)
     @JsonProperty("name")
     private String name;
 
-    @ColumnInfo(name = "amharic")
     @JsonProperty("amharic")
     private String amharic;
 
@@ -63,19 +57,19 @@ public class Category {
         isSelected = selected;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public Integer getPriority() {
         return priority;
     }
 
     public void setPriority(Integer priority) {
         this.priority = priority;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 }

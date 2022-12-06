@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.ethio.gpro.R;
 import org.ethio.gpro.adapters.CategoryAdapter;
 import org.ethio.gpro.adapters.ProductAdapter;
-import org.ethio.gpro.callbacks.MainActivityCallBackInterface;
 import org.ethio.gpro.callbacks.SearchCallBackInterface;
 
 
@@ -31,24 +31,21 @@ public class ProductHelper {
     }
 
     // common in HomeFragment and Product fragment
-    public static ProductAdapter initProducts(FragmentActivity activity, RecyclerView recyclerView, boolean useGridView, boolean recommended) {
-        MainActivityCallBackInterface callBack = (MainActivityCallBackInterface) activity;
-
+    public static ProductAdapter initProducts(Fragment activity, RecyclerView recyclerView, boolean useGridView, boolean recommended) {
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
         if (useGridView) {
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(activity, 2);
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(activity.getActivity(), 2);
             recyclerView.setLayoutManager(gridLayoutManager);
         } else {
-            LinearLayoutManager layoutManager = new LinearLayoutManager(activity.getApplicationContext());
+            LinearLayoutManager layoutManager = new LinearLayoutManager(activity.getContext());
             layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
             recyclerView.setLayoutManager(layoutManager);
         }
 
         ProductAdapter productAdapter = new ProductAdapter(activity);
         productAdapter.setCalculateProductWidth(true);
-        productAdapter.setCallBack(callBack);
 
         recyclerView.setAdapter(productAdapter);
 
@@ -76,7 +73,7 @@ public class ProductHelper {
         }
     }
 
-    public static ProductAdapter initRecommendedProducts(FragmentActivity activity, RecyclerView recyclerView) {
+    public static ProductAdapter initRecommendedProducts(Fragment activity, RecyclerView recyclerView) {
         return initProducts(activity, recyclerView, false, true);
     }
 }

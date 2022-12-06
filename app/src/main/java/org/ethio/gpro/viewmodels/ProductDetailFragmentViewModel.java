@@ -37,7 +37,7 @@ public class ProductDetailFragmentViewModel extends AndroidViewModel {
 
     // API
     public void makeShowApiRequest(int productId) {
-        productsRepository.makeRelatedProductCategory(productId);
+        productsRepository.makeProductShowRequest(productId);
     }
 
     @Override

@@ -2,7 +2,12 @@ package org.ethio.gpro.models.responses;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.ethio.gpro.models.Customer;
+
 public class SessionResponse {
+    @JsonProperty("full_name")
+    private String fullName;
+
     private String authToken;
 
     @JsonProperty("okay")
@@ -40,5 +45,9 @@ public class SessionResponse {
 
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
+    }
+
+    public String getFullName() {
+        return fullName;
     }
 }

@@ -1,12 +1,15 @@
 package org.ethio.gpro.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
@@ -26,13 +29,17 @@ import org.ethio.gpro.databinding.ActivityMainBinding;
 import org.ethio.gpro.helpers.ApplicationHelper;
 import org.ethio.gpro.helpers.PreferenceHelper;
 import org.ethio.gpro.models.Product;
-import org.ethio.gpro.ui.fragments.ProductFragment;
+
+import hotchemi.android.rate.AppRate;
 
 public class MainActivity extends AppCompatActivity implements MainActivityCallBackInterface {
     private NavController navController;
     private BottomNavigationView bottomNavigationView;
     private AppBarConfiguration appBarConfiguration;
     private String authToken = null;
+
+    private View headerView;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
         final String darkTheme = preferences.getString("theme_mode", "off");
         onThemeChange(darkTheme);
 
-        final Toolbar toolbar = binding.toolBar;
+        toolbar = binding.toolBar;
         setSupportActionBar(toolbar);
 
         bottomNavigationView = binding.bottomNavView;
@@ -78,9 +85,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
         navigationView.setNavigationItemSelectedListener(item -> {
             final int id = item.getItemId();
             if (id == R.id.menu_item_rate_app) {
-                Toast.makeText(this, "rate app", Toast.LENGTH_SHORT).show();
+                rateApp();
             } else if (id == R.id.menu_item_share) {
-                Toast.makeText(this, "share app", Toast.LENGTH_SHORT).show();
+                shareApp();
             } else {
                 NavigationUI.onNavDestinationSelected(item, navController);
             }
@@ -102,6 +109,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
                     hideBottomNavView();
             }
         });
+
+        //
+        headerView = navigationView.getHeaderView(0);
+
+        // rate
+//        AppRate.with(this)
+//                .setInstallDays(1)
+//                .setLaunchTimes(3)
+//                .setRemindInterval(1)
+//                .monitor();
+//        AppRate.showRateDialogIfMeetsConditions(this);
     }
 
     @Override
@@ -147,14 +165,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
     }
 
     @Override
-    public void onProductClick(Product product) {
-        final Bundle args = new Bundle();
-        args.putInt(ProductFragment.PRODUCT_ID, product.getId());
-        args.putString(ProductFragment.PRODUCT_NAME, product.getName());
-        navController.navigate(R.id.show_product, args);
-    }
-
-    @Override
     public String getAuthorizationToken() {
         return authToken;
     }
@@ -181,5 +191,59 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallB
         authToken = null;
         navController.navigateUp();
         hideBottomNavView();
+    }
+
+    @Override
+    public void setCurrentUser() {
+        String fullName = PreferenceHelper.getFullName(this);
+        String msg = "Welcome back!";
+
+        TextView name = headerView.findViewById(R.id.userFullName);
+        TextView msgView = headerView.findViewById(R.id.message);
+
+        if (fullName == null) {
+            fullName = "Guest";
+            msg = "Sign in to continue";
+        }
+
+        name.setText(fullName);
+        msgView.setText(msg);
+    }
+
+    @Override
+    public void onProductClick(@NonNull Product product) {
+        final Bundle args = new Bundle();
+        args.putString("productName", product.getName());
+        args.putInt("productId", product.getId());
+        navController.navigate(R.id.show_product, args);
+    }
+
+    @Override
+    public void hiddeToolBar() {
+        toolbar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showToolBar() {
+        toolbar.setVisibility(View.VISIBLE);
+    }
+
+    private void shareApp() {
+        final String appUri = getString(R.string.app_play_store_url);
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, appUri);
+        sendIntent.setType("text/plain");
+        startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
+    }
+
+    private void rateApp() {
+        final String pkgName = "org.ethio.gpro";
+        final String appStoreUrl = "https://play.google.com/store/apps/details?id=" + pkgName;
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, appStoreUrl);
+        sendIntent.setType("text/plain");
+        startActivity(Intent.createChooser(sendIntent,appStoreUrl));
     }
 }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CustomActivity">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/urlLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/url"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/urlLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="Smash" />
+
+    <Button
+        android:id="@+id/pass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/done"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Pass" />
+</RelativeLayout>

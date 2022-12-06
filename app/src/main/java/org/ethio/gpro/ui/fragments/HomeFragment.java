@@ -23,23 +23,25 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import org.ethio.gpro.R;
 import org.ethio.gpro.adapters.CategoryAdapter;
 import org.ethio.gpro.adapters.ProductAdapter;
+import org.ethio.gpro.adapters.TrendingAdapter;
 import org.ethio.gpro.callbacks.MainActivityCallBackInterface;
 import org.ethio.gpro.callbacks.ProductCallBackInterface;
 import org.ethio.gpro.databinding.FragmentHomeBinding;
 import org.ethio.gpro.helpers.ProductHelper;
-import org.ethio.gpro.viewmodels.ProductViewModel;
+import org.ethio.gpro.models.Product;
+import org.ethio.gpro.viewmodels.HomeFragmentViewModel;
 
 public class HomeFragment extends Fragment implements MenuProvider, ProductCallBackInterface {
-    private static final String TAG = "HomeFragment";
-    private final boolean loggedIn = false;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private ProductViewModel viewModel;
+    private HomeFragmentViewModel viewModel;
     private MainActivityCallBackInterface callBack;
     private RecyclerView productRecyclerView, categoryRecyclerView, recommendedRecyclerView;
+    private ViewPager trendingProducts;
     private TextView recommended, seeAll, categoriesTitle;
     private NavController navController;
     //
@@ -50,6 +52,7 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
     /* Adapters  */
     private CategoryAdapter categoryAdapter;
     private ProductAdapter productAdapter, recommendedAdapter;
+    private TrendingAdapter trendingAdapter;
 
     private FragmentHomeBinding binding;
 
@@ -62,27 +65,32 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         callBack = (MainActivityCallBackInterface) requireActivity();
-        viewModel = new ViewModelProvider(this).get(ProductViewModel.class);
+        callBack.showToolBar();
+        viewModel = new ViewModelProvider(this).get(HomeFragmentViewModel.class);
         navController = Navigation.findNavController(view);
 
         //
-        recommendedRecyclerView = binding.recommendedProducts;
         productRecyclerView = binding.productsRecyclerView;
         swipeRefreshLayout = binding.refreshLayout;
         recommended = binding.titleRecommended;
-        seeAll = binding.seeAllRecommendedProducts;
         categoriesTitle = binding.categoryListText;
+        recommendedRecyclerView = binding.recommendedProducts;
+        seeAll = binding.seeAllRecommendedProducts;
 
-        initCategories(view);
-        productAdapter = ProductHelper.initProducts(requireActivity(), productRecyclerView, true, false);
-        recommendedAdapter = ProductHelper.initProducts(requireActivity(), recommendedRecyclerView, false, false);
+        // init ui
+        initCategories();
+        initTrending();
+        productAdapter = ProductHelper.initProducts(this, productRecyclerView, true, false);
+        productAdapter.setCallBack(this);
+        recommendedAdapter = ProductHelper.initRecommendedProducts(this, recommendedRecyclerView);
+        recommendedAdapter.setCallBack(this);
 
         // event list...
         swipeRefreshLayout.setOnRefreshListener(() -> {
             viewModel.makeProductRequest(categoryAdapter.getSelectedCategoryName());
+            viewModel.makeCategoryRequest();
             swipeRefreshLayout.setRefreshing(false);
         });
-        seeAll.setOnClickListener(callBack::openRecommended);
 
         // handlers
         handlerThread = new HandlerThread("customUiHandler");
@@ -90,15 +98,25 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
         customHandler = new Handler(handlerThread.getLooper());
 
         // observers
-        viewModel.getCategoryList().observe(getViewLifecycleOwner(), categoryAdapter::submitList);
+        viewModel.getCategoryList().observe(getViewLifecycleOwner(), categoryAdapter::setCategories);
         viewModel.getProducts().observe(getViewLifecycleOwner(), productAdapter::setProducts);
         viewModel.getRecommended().observe(getViewLifecycleOwner(), recommendedAdapter::setProducts);
+        viewModel.getTrending().observe(getViewLifecycleOwner(), products -> {
+            if (products == null) {
+                return;
+            }
+            if (products.isEmpty()) {
+                trendingProducts.setVisibility(View.GONE);
+            }
+            trendingAdapter.updateList(products);
+        });
         viewModel.getSelectedCategoryPosition().observe(getViewLifecycleOwner(), this::sendProductRequest);
 
         // menu host
         if (callBack.getAuthorizationToken() == null) {
             requireActivity().addMenuProvider(this, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
         }
+        callBack.setCurrentUser();
 
         showRecyclerViewsWithDelay();
     }
@@ -123,6 +141,7 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
         categoryAdapter = null;
         productAdapter = null;
         recommendedAdapter = null;
+        trendingAdapter = null;
 
         categoriesTitle = null;
         categoryRecyclerView = null;
@@ -145,6 +164,12 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
         }
 
         return true;
+    }
+
+    @Override
+    public void onProductClick(@NonNull Product product) {
+        viewModel.setCurrentProduct(product);
+        callBack.onProductClick(product); // do the navigation part
     }
 
     @Override
@@ -178,15 +203,22 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
         viewModel.makeProductRequest(cat);
     }
 
-    private void initCategories(final View view) {
+    private void initCategories() {
         LinearLayoutManager linearLayout = new LinearLayoutManager(requireContext());
         linearLayout.setOrientation(RecyclerView.HORIZONTAL);
-        categoryRecyclerView = view.findViewById(R.id.category_list);
+        categoryRecyclerView = binding.categoryList;
         categoryRecyclerView.setLayoutManager(linearLayout);
 
         categoryAdapter = new CategoryAdapter(requireActivity());
         categoryAdapter.setCallBack(this);
         categoryRecyclerView.setAdapter(categoryAdapter);
+    }
+
+    private void initTrending() {
+        trendingProducts = binding.trendingProductList;
+        trendingProducts.setPadding(20, 0, 20, 0);
+        trendingAdapter = new TrendingAdapter(requireContext());
+        trendingProducts.setAdapter(trendingAdapter);
     }
 
     private void showRecyclerViewsWithDelay() {
@@ -198,16 +230,13 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
         customHandler.postDelayed(categoriesRunnable, 500);
 
         // products
-        productsRunnable = () -> requireActivity().runOnUiThread(() -> {
-            productRecyclerView.setVisibility(View.VISIBLE);
-        });
+        productsRunnable = () -> requireActivity().runOnUiThread(() -> productRecyclerView.setVisibility(View.VISIBLE));
         customHandler.postDelayed(productsRunnable, 1_000);
 
-        // recommended
         recommendRunnable = () -> requireActivity().runOnUiThread(() -> {
+            recommendedRecyclerView.setVisibility(View.VISIBLE);
             seeAll.setVisibility(View.VISIBLE);
             recommended.setVisibility(View.VISIBLE);
-            recommendedRecyclerView.setVisibility(View.VISIBLE);
         });
         customHandler.postDelayed(recommendRunnable, 2_000);
     }

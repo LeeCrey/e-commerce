@@ -88,6 +88,7 @@ public class SessionsFragment extends Fragment {
 
             if (sessionResult.getOkay()) {
                 PreferenceHelper.setAuthToken(requireActivity(), sessionResult.getAuthToken());
+                PreferenceHelper.setFullName(requireContext(), sessionResult.getFullName());
                 callBackInterface.setAuthToken(sessionResult.getAuthToken());
                 navController.navigateUp();
             } else {

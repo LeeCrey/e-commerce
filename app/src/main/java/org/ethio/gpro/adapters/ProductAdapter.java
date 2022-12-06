@@ -1,12 +1,12 @@
 package org.ethio.gpro.adapters;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,17 +14,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import org.ethio.gpro.R;
-import org.ethio.gpro.callbacks.MainActivityCallBackInterface;
+import org.ethio.gpro.callbacks.ProductCallBackInterface;
 import org.ethio.gpro.models.Product;
 import org.ethio.gpro.viewholders.ProductViewHolder;
 
 import java.util.List;
 
 public class ProductAdapter extends ListAdapter<Product, ProductViewHolder> {
+    private static final String TAG = "ProductAdapter";
     private static final DiffUtil.ItemCallback<Product> CALL_BACK = new DiffUtil.ItemCallback<Product>() {
         @Override
         public boolean areItemsTheSame(@NonNull Product oldItem, @NonNull Product newItem) {
-            return oldItem.getId().equals(newItem.getId());
+            final int oldItemId = oldItem.getId();
+            final int newItemId = newItem.getId();
+            return oldItemId == newItemId;
         }
 
         @Override
@@ -35,15 +38,14 @@ public class ProductAdapter extends ListAdapter<Product, ProductViewHolder> {
     private final LayoutInflater inflater;
     private final Activity activity;
     private final Picasso picasso;
-    private boolean loadShimmer = true;
-    private MainActivityCallBackInterface callBack;
+    private ProductCallBackInterface callBack;
     private boolean calculateWidth;
 
-    public ProductAdapter(Activity activity) {
+    public ProductAdapter(Fragment activity) {
         super(CALL_BACK);
 
-        this.activity = activity;
-        inflater = LayoutInflater.from(activity);
+        this.activity = activity.getActivity();
+        inflater = LayoutInflater.from(this.activity);
         picasso = Picasso.get();
     }
 
@@ -53,7 +55,6 @@ public class ProductAdapter extends ListAdapter<Product, ProductViewHolder> {
         View view = inflater.inflate(R.layout.layout_product, parent, false);
 
         final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) view.getLayoutParams();
-        params.height = 450;
 
         // basically for recommended products
         if (calculateWidth) {
@@ -64,11 +65,7 @@ public class ProductAdapter extends ListAdapter<Product, ProductViewHolder> {
 
         // on click listener...
         if (callBack != null) {
-            view.setOnClickListener(v -> {
-                if (!loadShimmer) {
-                    callBack.onProductClick(getItem(viewHolder.getAdapterPosition()));
-                }
-            });
+            view.setOnClickListener(v -> callBack.onProductClick(getItem(viewHolder.getAdapterPosition())));
         }
 
         return viewHolder;
@@ -76,45 +73,22 @@ public class ProductAdapter extends ListAdapter<Product, ProductViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        if (!loadShimmer) {
-            holder.bindView(activity, getItem(position));
-        }
-    }
-
-    @Override
-    public int getItemCount() {
-        if (loadShimmer) {
-            return 8;
-        }
-        return super.getItemCount();
+        holder.bindView(activity, getItem(position));
     }
 
     public void setCalculateProductWidth(boolean b) {
         calculateWidth = b;
     }
 
-    public void setCallBack(MainActivityCallBackInterface callBack) {
+    public void setCallBack(ProductCallBackInterface callBack) {
         this.callBack = callBack;
     }
 
-    //    @SuppressLint("NotifyDataSetChanged")
-    @SuppressLint("NotifyDataSetChanged")
     public void setProducts(final List<Product> list) {
         if (list == null) {
             return;
         }
 
-        if (list.isEmpty()) {
-            return;
-        }
-
-        try {
-            Product p = getItem(0);
-        } catch (Exception ex) {
-            notifyDataSetChanged(); // reset adapter position. If you have better sol_n, welcome
-        } finally {
-            loadShimmer = false;
-            submitList(list);
-        }
+        submitList(list);
     }
 }

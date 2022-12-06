@@ -84,5 +84,17 @@
     <string name="redirected_from_web">From web</string>
     <string name="token">Token</string>
     <string name="you_are_redirected_from_web">You are redirected from web.</string>
+    <string name="trending">Trending</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="detail">Detail</string>
+    <string name="location">Location</string>
+    <string name="lbl_rates">Rates</string>
+    <string name="lbl_origin">Origin</string>
+    <string name="lbl_description">Description</string>
+    <string name="lbl_price">Price</string>
+    <string name="location_button">location button</string>
+    <string name="app_play_store_url" />
+    <string name="send_to">Send To</string>
 
 </resources>

@@ -18,12 +18,16 @@ import org.ethio.gpro.callbacks.ProductCallBackInterface;
 import org.ethio.gpro.models.Category;
 import org.ethio.gpro.viewholders.CategoryViewHolder;
 
+import java.util.List;
+
 public class CategoryAdapter extends ListAdapter<Category, CategoryViewHolder> {
     private static final String TAG = "CategoryAdapter";
     private static final DiffUtil.ItemCallback<Category> DIFF_CALC_CALLBACK = new DiffUtil.ItemCallback<Category>() {
         @Override
         public boolean areItemsTheSame(@NonNull Category oldItem, @NonNull Category newItem) {
-            return oldItem.getId().equals(newItem.getId());
+            final int oldItemId = oldItem.getCategoryId();
+            final int newItemId = newItem.getCategoryId();
+            return oldItemId == newItemId;
         }
 
         @Override
@@ -100,5 +104,13 @@ public class CategoryAdapter extends ListAdapter<Category, CategoryViewHolder> {
         notifyItemChanged(selectedCategoryPosition, oldCategory);
 
         selectedCategoryPosition = position;
+    }
+
+    public void setCategories(final List<Category> categories) {
+        if (categories == null) {
+            return;
+        }
+
+        submitList(categories);
     }
 }

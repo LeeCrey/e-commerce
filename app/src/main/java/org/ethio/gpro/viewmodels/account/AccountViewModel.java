@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import org.ethio.gpro.models.AccountResponse;
+import org.ethio.gpro.models.responses.AccountResponse;
 import org.ethio.gpro.repositories.AccountRepository;
 
 public class AccountViewModel extends AndroidViewModel {

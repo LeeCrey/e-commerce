@@ -104,7 +104,7 @@ public class RetrofitConnectionUtil {
                 new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                     @Override
                     public void log(@NonNull String message) {
-                        Log.d(TAG, "log: http log: " + message);
+//                        Log.d(TAG, "log: http log: " + message);
                     }
                 });
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);

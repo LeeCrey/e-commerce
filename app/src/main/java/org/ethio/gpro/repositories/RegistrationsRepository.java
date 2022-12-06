@@ -1,12 +1,12 @@
 package org.ethio.gpro.repositories;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import org.ethio.gpro.helpers.JsonHelper;
-import org.ethio.gpro.helpers.ResponseCode;
 import org.ethio.gpro.models.Customer;
 import org.ethio.gpro.models.responses.RegistrationResponse;
 import org.ethio.gpro.repositories.api.account.RegistrationsApi;
@@ -20,6 +20,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RegistrationsRepository {
+    private static final String TAG = "RegistrationsRepository";
     private MutableLiveData<RegistrationResponse> mRegResponse;
     private RegistrationsApi api;
     private Call<RegistrationResponse> apiCall;
@@ -46,7 +47,11 @@ public class RegistrationsRepository {
             @Override
             public void onResponse(@NonNull Call<RegistrationResponse> call, @NonNull Response<RegistrationResponse> response) {
                 RegistrationResponse lastResponse = null;
-                if (ResponseCode.unProcessableEntity(response.code())) {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    Log.d(TAG, "onResponse: " + response.body());
+                    lastResponse = response.body();
+                } else {
                     // retrofit does not deserialize string into object when response code is not successful, so
                     // we have to do it manually
                     ResponseBody errorBody = response.errorBody();
@@ -57,8 +62,6 @@ public class RegistrationsRepository {
                             e.printStackTrace();
                         }
                     }
-                } else {
-                    lastResponse = response.body();
                 }
                 mRegResponse.postValue(lastResponse);
             }
@@ -67,7 +70,7 @@ public class RegistrationsRepository {
             public void onFailure(@NonNull Call<RegistrationResponse> call, @NonNull Throwable t) {
                 RegistrationResponse response = new RegistrationResponse();
                 response.setOkay(false);
-                response.setError("Something went wrong.");
+                response.setMsg("Something went wrong.");
                 mRegResponse.postValue(response);
             }
         });
@@ -105,7 +108,7 @@ public class RegistrationsRepository {
             public void onFailure(@NonNull Call<RegistrationResponse> call, @NonNull Throwable t) {
                 RegistrationResponse response = new RegistrationResponse();
                 response.setOkay(false);
-                response.setError(t.getMessage());
+                response.setMsg(t.getMessage());
                 mRegResponse.postValue(response);
             }
         });

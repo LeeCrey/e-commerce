@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.StrikethroughSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -65,7 +66,7 @@ public class ProductViewHolder extends RecyclerView.ViewHolder {
             oldPrice.setVisibility(View.VISIBLE);
         }
 
-        attachImage("https://t.me/hello.png");
+        attachImage(product.getImages().get(0));
     }
 
     private void attachImage(final String url) {

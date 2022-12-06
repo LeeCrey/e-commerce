@@ -2,6 +2,8 @@ package org.ethio.gpro.callbacks;
 
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import org.ethio.gpro.models.Customer;
 import org.ethio.gpro.models.Product;
 
@@ -17,8 +19,6 @@ public interface MainActivityCallBackInterface {
 
     void closeKeyBoard();
 
-    void onProductClick(Product product);
-
     String getAuthorizationToken();
 
     void setAuthToken(String authToken);
@@ -28,4 +28,10 @@ public interface MainActivityCallBackInterface {
     void logout();
 
     void setCurrentUser();
+
+    void onProductClick(@NonNull Product product);
+
+    void hiddeToolBar();
+
+    void showToolBar();
 }

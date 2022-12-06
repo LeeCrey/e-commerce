@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import org.ethio.gpro.models.Category;
 import org.ethio.gpro.models.Product;
 import org.ethio.gpro.models.responses.ProductResponse;
+import org.ethio.gpro.models.responses.ProductShowResponse;
 import org.ethio.gpro.repositories.api.ProductApi;
 import org.ethio.gpro.repositories.retrofit.RetrofitConnectionUtil;
 
@@ -23,22 +24,35 @@ import retrofit2.Response;
 public class ProductsRepository {
     private static final String TAG = "ProductsRepository";
     private final ProductApi api;
-    private final MutableLiveData<List<Category>> mCategories;
     private final MutableLiveData<List<Product>> mProducts;
-    private final MutableLiveData<List<Product>> mRecommended;
+    private MutableLiveData<List<Category>> mCategories;
+    private MutableLiveData<List<Product>> mRecommended;
+    private MutableLiveData<List<Product>> mTrending;
+
+    private MutableLiveData<Product> mProduct; // show product => products/id
+
     private Call<List<Category>> categoryCall;
     private Call<ProductResponse> productCall;
+
+    private Call<ProductShowResponse> productShowResponseCall;
 
     public ProductsRepository(@NonNull Application application) {
         api = RetrofitConnectionUtil.getRetrofitInstance(application).create(ProductApi.class);
         mProducts = new MutableLiveData<>();
-        mRecommended = new MutableLiveData<>();
-        mCategories = new MutableLiveData<>();
-
-        // get from db
-//        mCategories = AppDataBase.getInstance(application).categoryDAO().getAll();
     }
 
+    // init
+    public void initForHomeFragment() {
+        mRecommended = new MutableLiveData<>();
+        mCategories = new MutableLiveData<>();
+        mTrending = new MutableLiveData<>();
+    }
+
+    public void initForShowFragment() {
+        mProduct = new MutableLiveData<>();
+    }
+
+    // for observers
     public LiveData<List<Category>> getCategories() {
         return mCategories;
     }
@@ -51,6 +65,11 @@ public class ProductsRepository {
         return mRecommended;
     }
 
+    public LiveData<List<Product>> getTrending() {
+        return mTrending;
+    }
+
+    // api
     public void makeApiRequestForCategory() {
         if (categoryCall != null) {
             categoryCall.cancel();
@@ -62,6 +81,7 @@ public class ProductsRepository {
             @Override
             public void onResponse(@NonNull Call<List<Category>> call, @NonNull Response<List<Category>> response) {
                 Category all = new Category();
+                all.setCategoryId(-1);
                 all.setName("All");
                 all.setSelected(true);
                 List<Category> categories = new ArrayList<>();
@@ -92,7 +112,8 @@ public class ProductsRepository {
                 final ProductResponse productResponse = response.body();
                 if (productResponse != null) {
                     mProducts.postValue(productResponse.getProducts());
-//                    mRecommended.postValue(productResponse.getRecommended());
+                    mRecommended.postValue(productResponse.getRecommended());
+                    mTrending.postValue(productResponse.getTrending());
                 }
             }
 
@@ -113,5 +134,36 @@ public class ProductsRepository {
                 categoryCall.cancel();
             }
         }
+    }
+
+
+    // for product show fragment
+    public LiveData<Product> showProduct() {
+        return mProduct;
+    }
+
+    public void makeProductShowRequest(int productId) {
+        if (null != productShowResponseCall) {
+            productShowResponseCall.cancel();
+        }
+
+        productShowResponseCall = api.show(productId);
+        productShowResponseCall.enqueue(new Callback<ProductShowResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<ProductShowResponse> call, @NonNull Response<ProductShowResponse> response) {
+                if (response.isSuccessful()) {
+                    ProductShowResponse productResponse = response.body();
+                    if (productResponse != null) {
+                        mProduct.postValue(productResponse.getProduct());
+                        mProducts.setValue(productResponse.getRelatedProducts());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ProductShowResponse> call, @NonNull Throwable t) {
+
+            }
+        });
     }
 }

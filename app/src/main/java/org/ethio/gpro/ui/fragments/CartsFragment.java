@@ -54,18 +54,16 @@ public class CartsFragment extends Fragment implements MenuProvider, CartCallBac
 
         initRecyclerView(view);
 
-        touchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                viewModel.deleteCart(viewHolder.getAdapterPosition());
-            }
-        });
-        viewModel.getCarts().observe(getViewLifecycleOwner(), this::submitCarts);
+//        touchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+//            @Override
+//            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+//                return false;
+//            }
+//
+//            @Override
+//            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+//            }
+//        });
 
         // add menu host
         requireActivity().addMenuProvider(this, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
@@ -103,7 +101,7 @@ public class CartsFragment extends Fragment implements MenuProvider, CartCallBac
     public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
         final int id = menuItem.getItemId();
         if (id == R.id.clear_carts) {
-            viewModel.deleteCarts();
+//            viewModel.deleteCarts();
         }
         return false;
     }

@@ -2,6 +2,7 @@ package org.ethio.gpro.repositories.api;
 
 import org.ethio.gpro.models.Category;
 import org.ethio.gpro.models.responses.ProductResponse;
+import org.ethio.gpro.models.responses.ProductShowResponse;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public interface ProductApi {
     // controllers/products_controllers.rb#method => show
     @Headers({"accept: application/json"})
     @GET("products/{id}")
-    Call<ProductResponse> show(@Path("id") int productId);
+    Call<ProductShowResponse> show(@Path("id") int productId);
 
     // controllers/products_controller.rb#method => categories
     @Headers({"accept: application/json"})

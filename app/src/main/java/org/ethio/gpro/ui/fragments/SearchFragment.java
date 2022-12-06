@@ -97,7 +97,7 @@ public class SearchFragment extends Fragment implements MenuProvider, SearchCall
     private void initRecyclerView(final View view) {
         recyclerView = view.findViewById(R.id.products_recycler_view);
 
-        productAdapter = new ProductAdapter(requireActivity());
+        productAdapter = new ProductAdapter(this);
 
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
 
@@ -105,7 +105,7 @@ public class SearchFragment extends Fragment implements MenuProvider, SearchCall
 //        recyclerView.setLayoutManager(layoutManager);
 
         recyclerView.setAdapter(productAdapter);
-        productAdapter.setCallBack(callBackInterface);
+//        productAdapter.setCallBack(callBackInterface);
     }
 
     // delay some time

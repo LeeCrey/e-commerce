@@ -17,13 +17,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/product_image"
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/product_images"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_page_height"
-                android:transitionName="product_image"
+                android:transitionName="productImage"
                 app:layout_collapseMode="parallax" />
 
             <androidx.appcompat.widget.Toolbar
@@ -53,171 +53,154 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        tools:context=".ui.fragments.product.DetailsFragment">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/surface"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="@dimen/app_margin">
 
-            <!--  ORIGIN    -->
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <!--    ORIGIN        -->
+            <TextView
+                android:id="@+id/origin"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:paddingHorizontal="@dimen/app_margin">
+                android:text="@string/lbl_origin"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/origin"
-                    style="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/lbl_origin"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/product_origin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_toEndOf="@id/origin"
-                    android:text="@{product.getOrigin()}"
-                    android:textSize="17sp" />
-
-            </RelativeLayout>
-
-            <!--  PRICE  -->
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/product_origin"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:paddingHorizontal="@dimen/app_margin">
+                android:layout_alignParentEnd="true"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/origin"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/price"
-                    style="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/lbl_price"
-                    android:textSize="18sp" />
+            <!--    PRICE        -->
+            <TextView
+                android:id="@+id/price"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/lbl_price"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/origin" />
 
-                <TextView
-                    android:id="@+id/priceValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toStartOf="@id/product_old_price"
-                    android:layout_toEndOf="@id/price"
-                    android:textSize="17sp" />
-
-                <TextView
-                    android:id="@+id/product_old_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:gravity="center"
-                    android:textSize="17sp"
-                    android:visibility="gone" />
-
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/priceValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/price"
+                app:layout_constraintTop_toBottomOf="@id/origin" />
 
             <!--    Rate    -->
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/rate"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:paddingHorizontal="@dimen/app_margin">
+                android:layout_marginTop="15dp"
+                android:text="@string/lbl_rates"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/price" />
 
-                <TextView
-                    android:id="@+id/rate"
-                    style="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:layout_width="130dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@string/lbl_rates"
-                    android:textSize="18sp" />
+            <RatingBar
+                android:id="@+id/product_rates"
+                style="@style/Widget.AppCompat.RatingBar.Indicator"
+                android:layout_width="175dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:max="5"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                app:layout_constraintStart_toEndOf="@id/rate"
+                app:layout_constraintTop_toBottomOf="@id/price" />
 
-                <RelativeLayout
-                    android:id="@+id/rating"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toStartOf="@id/rate_product"
-                    android:layout_toEndOf="@id/rate">
+            <TextView
+                android:id="@+id/rate_p"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                app:layout_constraintStart_toEndOf="@id/product_rates"
+                app:layout_constraintTop_toBottomOf="@id/price" />
 
-                    <RatingBar
-                        android:id="@+id/product_rates"
-                        style="@style/Widget.AppCompat.RatingBar.Indicator"
-                        android:layout_width="175dp"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:max="5"
-                        android:scaleX="0.8"
-                        android:scaleY="0.8" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_toEndOf="@id/product_rates" />
-                </RelativeLayout>
-
-                <ImageView
-                    android:id="@+id/rate_product"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:contentDescription="@string/content_description"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_arrow_right_circle" />
-            </RelativeLayout>
+            <ImageView
+                android:id="@+id/rate_product"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:contentDescription="@string/content_description"
+                android:padding="10dp"
+                android:src="@drawable/ic_arrow_right_circle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/rate_p"
+                app:layout_constraintTop_toBottomOf="@id/price"
+                app:layout_goneMarginTop="15dp" />
 
             <!--    DETAIL    -->
-            <LinearLayout
+            <TextView
+                android:id="@+id/descText"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical"
-                android:paddingHorizontal="@dimen/app_margin">
+                android:layout_marginTop="15dp"
+                android:text="@string/lbl_description"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rate" />
 
-                <TextView
-                    style="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/lbl_description" />
+            <TextView
+                android:id="@+id/product_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/descText" />
 
-                <TextView
-                    android:id="@+id/product_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@{product.getDescription()}" />
-            </LinearLayout>
-
+            <!--    Button        -->
             <Button
                 android:id="@+id/add_item_to_cart"
                 style="@style/custom_un_elevated_button"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/app_margin"
                 android:layout_marginTop="5dp"
-                android:text="@string/add_to_cart" />
+                android:text="@string/add_to_cart"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/product_description" />
 
+            <!--    RECOMMENDED        -->
             <TextView
                 android:id="@+id/title_related"
                 style="@style/TextAppearance.MaterialComponents.Headline6"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:padding="8dp"
-                android:text="@string/lbl_related_products" />
+                android:text="@string/lbl_related_products"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/add_item_to_cart" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recommended_products"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_related" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

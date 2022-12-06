@@ -87,12 +87,10 @@ public class RegistrationsFragment extends Fragment {
             }
 
             if (registrationResponse.getOkay()) {
-                Toast.makeText(requireContext(), "success", Toast.LENGTH_SHORT).show();
-                navController.navigateUp();
                 navController.navigateUp();
             } else {
-                if (null != registrationResponse.getMessage()) {
-                    Toast.makeText(requireContext(), registrationResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                if (null != registrationResponse.getMsg()) {
+                    Toast.makeText(requireContext(), registrationResponse.getMsg(), Toast.LENGTH_SHORT).show();
                     loading.setVisibility(View.GONE);
                     signUp.setEnabled(true);
                 } else {
@@ -117,7 +115,6 @@ public class RegistrationsFragment extends Fragment {
         password = null;
         passwordConfirmation = null;
         passwordLayout = null;
-
         navController = null;
     }
 

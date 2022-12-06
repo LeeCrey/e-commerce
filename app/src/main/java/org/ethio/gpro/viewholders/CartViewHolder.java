@@ -13,27 +13,14 @@ import org.ethio.gpro.models.Cart;
 
 public class CartViewHolder extends RecyclerView.ViewHolder {
     private final TextView cartName;
-    private final ShimmerFrameLayout shimmerFrameLayout;
 
     public CartViewHolder(@NonNull View itemView) {
         super(itemView);
 
         cartName = itemView.findViewById(R.id.cart_name);
-        shimmerFrameLayout = itemView.findViewById(R.id.cart_shimmer);
     }
 
     public void bindView(Cart item) {
-        stopShimmer();
-
-        cartName.setBackground(null);
         cartName.setText(item.getName());
-
-    }
-
-    private void stopShimmer() {
-        shimmerFrameLayout.stopShimmer();
-        shimmerFrameLayout.setShimmer(null);
-
-        cartName.setBackground(null);
     }
 }
