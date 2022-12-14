@@ -1,14 +1,15 @@
 <resources>
     <color name="primaryDark">#273238</color>
     <color name="window">#313335</color>
-    <color name="surface">#333a40</color>
     <color name="textPrimaryColor">@color/white</color>
     <color name="primary">#4fc3f7</color>
     <color name="drawerHeaderBackground">#1b91cf </color>
-
+    <color name="surface">#333a40</color>
     <color name="category">#36474f</color>
+
     <!-- Base application theme. -->
     <style name="Theme.GPro" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
         <item name="colorPrimary">@color/primary</item>
         <item name="colorOnPrimary">@color/onPrimary</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>

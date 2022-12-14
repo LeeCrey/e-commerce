@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">Gebeya</string>
-    <string name="base_url" translatable="false">https://flat-items-stop-213-55-85-43.loca.lt</string>
+    <string name="base_url" translatable="false">https://wild-snakes-pay-213-55-85-43.loca.lt</string>
 
     <string name="language">Language</string>
     <string name="price_in_ethio">%1$.2f ETB</string>
@@ -8,6 +8,7 @@
     <string name="amharic" translatable="false">አማርኛ</string>
     <string name="english" translatable="false">English</string>
 
+    <!-- for field   -->
     <string name="firstName" translatable="false">firstName</string>
     <string name="lastName" translatable="false">lastName</string>
     <string name="email" translatable="false">email</string>
@@ -36,7 +37,6 @@
     <string name="lbl_see_all">See all</string>
     <string name="settings">Settings</string>
 
-    <!-- SAMPLE(Design purpose)   -->
     <string name="edit_profile">Edit Profile</string>
     <string name="sign_out">Sign out</string>
     <string name="password_error"><![CDATA[Length must be >5]]></string>
@@ -44,10 +44,10 @@
 
     <!-- Sync Preferences -->
     <string name="categories">Categories</string>
-    <string name="app_pref">Application</string>
-    <string name="on">on</string>
+    <string name="app_pref" translatable="false">Application</string>
+    <string name="on" translatable="false">on</string>
     <string name="night_mode">Night Mode</string>
-    <string name="font_size_msg" translatable="false">Font size for text description of product.</string>
+    <string name="font_size_msg">Font size for text description of product.</string>
     <string name="font_size">Font Size</string>
     <string name="clear_carts">Clear</string>
     <string name="lbl_rate">Rate</string>
@@ -76,25 +76,35 @@
     <string name="auto" translatable="false">auto</string>
     <string name="add_to_cart">Add to Cart</string>
     <string name="lbl_related_products">Related Products</string>
-    <string name="product_image_place_h">product image</string>
+    <string name="product_image_place_h" translatable="false">product image</string>
     <string name="feedback_msg">Please provide your feedback here</string>
     <string name="terms_and_condition">By signing up, you\'re agree to our <a href="https://t.me/lee_crey">Terms &amp; Conditions</a> and <a href="https://googl.come"> Privacy Policy.</a> </string>
     <string name="lbl_confirm">Confirm Account</string>
     <string name="not_confirmed_yet">Not confirmed yet?</string>
-    <string name="redirected_from_web">From web</string>
-    <string name="token">Token</string>
-    <string name="you_are_redirected_from_web">You are redirected from web.</string>
+    <string name="redirected_from_web" translatable="false">From web</string>
+    <string name="token" translatable="false">Token</string>
+    <string name="you_are_redirected_from_web" translatable="false">You are redirected from web.</string>
     <string name="trending">Trending</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="detail">Detail</string>
     <string name="location">Location</string>
     <string name="lbl_rates">Rates</string>
     <string name="lbl_origin">Origin</string>
     <string name="lbl_description">Description</string>
     <string name="lbl_price">Price</string>
-    <string name="location_button">location button</string>
-    <string name="app_play_store_url" />
-    <string name="send_to">Send To</string>
+    <string name="location_button" translatable="false">location button</string>
+    <string name="app_play_store_url" translatable="false" />
+    <string name="send_to" translatable="false">Send To</string>
+    <!-- TODO: Remove or change this placeholder text -->
+
+    <!--Pref-->
+    <string name="feedbacks">Feedbacks</string>
+    <string name="shop_location">Location</string>
+    <string name="map_type">Map Type</string>
+
+    <string name="normal">Normal</string>
+    <string name="map_type_title">Map Type</string>
+    <string name="map_zoom_level">Default Zoom Level</string>
+    <string name="map_z_level">Zoom Level</string>
+    <string name="click">Click</string>
 
 </resources>

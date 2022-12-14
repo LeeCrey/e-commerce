@@ -14,7 +14,7 @@
         android:title="@string/sign_in" />
 
     <item
-        android:id="@+id/menu_item_setting"
+        android:id="@+id/navigation_settings"
         android:title="@string/settings" />
 
 </menu>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="comment"
+            type="org.ethio.gpro.models.Comment" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/app_margin">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/customer_profile_picture"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/load_error"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/customer_full_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="15dp"
+                android:text="Lee Crey"
+                app:layout_constraintEnd_toStartOf="@id/option_menu"
+                app:layout_constraintStart_toEndOf="@id/customer_profile_picture"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/option_menu"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="@string/content_description"
+                android:src="@drawable/ic_ellipsis_v"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!--    MIDDLE PART  -->
+            <RatingBar
+                android:id="@+id/product_rate_by_customer"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/customer_profile_picture" />
+
+            <TextView
+                android:id="@+id/created_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/product_rate_by_customer"
+                app:layout_constraintTop_toBottomOf="@id/customer_profile_picture" />
+
+            <TextView
+                android:id="@+id/comment_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{comment.getContent()}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/product_rate_by_customer" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

@@ -37,6 +37,7 @@ public class ProductHelper {
 
         if (useGridView) {
             GridLayoutManager gridLayoutManager = new GridLayoutManager(activity.getActivity(), 2);
+//            LinearLayoutManager layoutManager = new LinearLayoutManager(activity.getContext());
             recyclerView.setLayoutManager(gridLayoutManager);
         } else {
             LinearLayoutManager layoutManager = new LinearLayoutManager(activity.getContext());

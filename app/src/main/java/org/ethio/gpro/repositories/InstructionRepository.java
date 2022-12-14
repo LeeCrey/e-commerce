@@ -57,6 +57,37 @@ public class InstructionRepository {
         });
     }
 
+    // odd
+    // feedback
+    public void sendFeedback(String header, String message) {
+        cancelConnection();
+
+        instructionsResponseCall = api.sendFeedback(header, message);
+        instructionsResponseCall.enqueue(new Callback<InstructionsResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<InstructionsResponse> call, @NonNull Response<InstructionsResponse> response) {
+                if (response.isSuccessful()) {
+                    final InstructionsResponse resp = response.body();
+                    if (resp != null) {
+                        mInstructionResponse.postValue(resp);
+                    }
+                } else {
+                    InstructionsResponse instructionsResponse = new InstructionsResponse();
+                    instructionsResponse.setOkay(false);
+                    instructionsResponse.setMessage("Un-Authorized request");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<InstructionsResponse> call, @NonNull Throwable t) {
+                InstructionsResponse response = new InstructionsResponse();
+                response.setOkay(false);
+                response.setMessage(t.getMessage());
+                mInstructionResponse.postValue(response);
+            }
+        });
+    }
+
     public void cancelConnection() {
         if (null != instructionsResponseCall) {
             if (!(instructionsResponseCall.isExecuted() || instructionsResponseCall.isCanceled())) {

@@ -83,6 +83,7 @@ public class ProductsRepository {
                 Category all = new Category();
                 all.setCategoryId(-1);
                 all.setName("All");
+                all.setAmharic("ሁሉም");
                 all.setSelected(true);
                 List<Category> categories = new ArrayList<>();
                 categories.add(all);

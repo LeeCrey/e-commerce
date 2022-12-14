@@ -5,6 +5,7 @@ import org.ethio.gpro.models.responses.InstructionsResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
@@ -20,4 +21,9 @@ public interface InstructionsApi {
     @Headers("accept: application/json")
     @POST("customers/unlock")
     Call<InstructionsResponse> sendUnlockInstruction(@Body Customer customer);
+
+    /// odd here
+    @Headers("accept: application/json")
+    @POST("feedbacks")
+    Call<InstructionsResponse> sendFeedback(@Header("Authorization") String header, @Body String feedback);
 }

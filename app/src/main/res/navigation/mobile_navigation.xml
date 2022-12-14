@@ -12,14 +12,14 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/show_product"
-            app:destination="@id/navigation_product"
+            app:destination="@id/navigation_product_detail"
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/to_right" />
         <action
             android:id="@+id/open_recommended_products"
-            app:destination="@id/recommendedProductFragment"
+            app:destination="@id/navigation_recommended_products"
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
@@ -74,21 +74,35 @@
         android:name="org.ethio.gpro.ui.fragments.SettingsFragment"
         android:label="@string/settings" />
     <fragment
-        android:id="@+id/navigation_product"
-        android:name="org.ethio.gpro.ui.fragments.ProductFragment"
+        android:id="@+id/navigation_product_detail"
+        android:name="org.ethio.gpro.ui.fragments.DetailFragment"
         android:label="{productName}"
-        tools:layout="@layout/fragment_product_show">
+        tools:layout="@layout/fragment_detail">
         <argument
             android:name="productName"
             app:argType="string"
             app:nullable="true" />
         <argument
             android:name="productId"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <action
+            android:id="@+id/detail_to_rate_product"
+            app:destination="@id/navigation_rate"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+        <action
+            android:id="@+id/open_location_navigation"
+            app:destination="@id/navigation_location"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
     </fragment>
     <fragment
-        android:id="@+id/recommendedProductFragment"
+        android:id="@+id/navigation_recommended_products"
         android:name="org.ethio.gpro.ui.fragments.RecommendedFragment"
         android:label="@string/lbl_recommended"
         tools:layout="@layout/fragment_recommended" />
@@ -125,4 +139,19 @@
             app:argType="string"
             app:nullable="true" />
     </fragment>
+    <fragment
+        android:id="@+id/navigation_rate"
+        android:name="org.ethio.gpro.ui.fragments.RateFragment"
+        android:label="fragment_rate"
+        tools:layout="@layout/fragment_rate">
+        <argument
+            android:name="productId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_location"
+        android:name="org.ethio.gpro.ui.fragments.LocationFragment"
+        android:label="@string/location"
+        tools:layout="@layout/fragment_location" />
 </navigation>

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
@@ -15,6 +16,7 @@ import com.squareup.picasso.Picasso;
 
 import org.ethio.gpro.R;
 import org.ethio.gpro.callbacks.ProductCallBackInterface;
+import org.ethio.gpro.databinding.LayoutProductBinding;
 import org.ethio.gpro.models.Product;
 import org.ethio.gpro.viewholders.ProductViewHolder;
 
@@ -35,11 +37,13 @@ public class ProductAdapter extends ListAdapter<Product, ProductViewHolder> {
             return oldItem.isContentTheSame(newItem);
         }
     };
+    private static final int XHDPI = 620;
     private final LayoutInflater inflater;
     private final Activity activity;
     private final Picasso picasso;
     private ProductCallBackInterface callBack;
     private boolean calculateWidth;
+    private int height;
 
     public ProductAdapter(Fragment activity) {
         super(CALL_BACK);
@@ -47,21 +51,26 @@ public class ProductAdapter extends ListAdapter<Product, ProductViewHolder> {
         this.activity = activity.getActivity();
         inflater = LayoutInflater.from(this.activity);
         picasso = Picasso.get();
+        calculateWidth = false;
     }
 
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.layout_product, parent, false);
+        LayoutProductBinding binding = DataBindingUtil.inflate(inflater, R.layout.layout_product, parent, false);
 
+        View view = binding.getRoot();
         final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) view.getLayoutParams();
 
-        // basically for recommended products
         if (calculateWidth) {
-            params.width = 330;
+            if (height == XHDPI) {
+                params.width = 450;
+            } else {
+                params.width = 350;
+            }
         }
 
-        final ProductViewHolder viewHolder = new ProductViewHolder(view, picasso);
+        final ProductViewHolder viewHolder = new ProductViewHolder(binding);
 
         // on click listener...
         if (callBack != null) {
@@ -89,6 +98,14 @@ public class ProductAdapter extends ListAdapter<Product, ProductViewHolder> {
             return;
         }
 
+        if (list.isEmpty()) {
+            return;
+        }
+
         submitList(list);
+    }
+
+    public void setHeight(int screenHeight) {
+        height = screenHeight;
     }
 }

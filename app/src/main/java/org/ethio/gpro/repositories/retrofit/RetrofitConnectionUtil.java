@@ -2,15 +2,14 @@ package org.ethio.gpro.repositories.retrofit;
 
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import org.ethio.gpro.R;
 import org.ethio.gpro.helpers.ApplicationHelper;
-import org.ethio.gpro.helpers.CustomUrlHelper;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,8 +44,8 @@ public class RetrofitConnectionUtil {
                     .build();
             ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.WRAP_ROOT_VALUE);
 
-//            String finalUrl = application.getString(R.string.base_url);
-            String finalUrl = CustomUrlHelper.getUrl(application);
+            String finalUrl = application.getString(R.string.base_url);
+//            String finalUrl = CustomUrlHelper.getUrl(application);
             retrofit = new Retrofit.Builder()
                     .baseUrl(finalUrl)
                     .addConverterFactory(JacksonConverterFactory.create(mapper))

@@ -53,18 +53,27 @@
                 android:layout_height="match_parent" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/sendFeedback"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+        <Button
+            android:id="@+id/send_feedback"
+            style="@style/custom_un_elevated_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:padding="10dp"
             android:text="@string/btn_send"
-            android:textColor="@color/primary"
-            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/feedBackLayout" />
+
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circular"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/send_feedback"
+            app:layout_constraintEnd_toEndOf="@id/send_feedback"
+            app:layout_constraintStart_toStartOf="@id/send_feedback"
+            app:layout_constraintTop_toTopOf="@id/send_feedback" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </LinearLayout>

@@ -26,9 +26,14 @@ public class InstructionsViewModel extends AndroidViewModel {
         return oInstructionResponse;
     }
 
+    public void sendFeedback(String header, String  msg) {
+        repository.sendFeedback(header, msg);
+    }
+
     public void sendInstruction(String email, boolean isUnlockRequest) {
         Customer customer = new Customer();
         customer.setEmail(email);
         repository.sendRequest(customer, isUnlockRequest);
     }
+
 }

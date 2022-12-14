@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:clickable="true"
-    android:focusable="true"
-    android:minHeight="280dp"
-    app:cardCornerRadius="4dp"
-    app:checkedIcon="@null">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmer_layout"
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="product"
+            type="org.ethio.gpro.models.Product" />
+
+        <variable
+            name="price"
+            type="String" />
+    </data>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardCornerRadius="4dp"
+        app:checkedIcon="@null">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -22,15 +31,14 @@
 
             <ImageView
                 android:id="@+id/product_image"
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:background="@color/shimmer_color"
                 android:contentDescription="@string/content_description"
                 android:scaleType="centerCrop"
-                android:transitionName="productImage"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:productImage="@{product.getThumbnail()}" />
 
             <!-- Title, secondary and supporting text -->
             <TextView
@@ -39,10 +47,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/app_margin"
                 android:layout_marginTop="4dp"
-                android:background="@color/shimmer_color"
+                android:fontFamily="@font/roboto_black"
+                android:text="@{product.getName()}"
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textSize="17sp"
-                android:fontFamily="@font/roboto_black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/product_image" />
@@ -55,11 +63,12 @@
                 android:layout_marginTop="4dp"
                 android:textAppearance="?attr/textAppearanceHeadline4"
                 android:textSize="16sp"
-                android:visibility="gone"
+                android:visibility="@{oldProductPrice == null ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toTopOf="@id/new_product_price"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/product_name" />
+                app:layout_constraintTop_toBottomOf="@id/product_name"
+                app:setStrikeThroughText="@{product}" />
 
             <TextView
                 android:id="@+id/new_product_price"
@@ -67,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/app_margin"
                 android:layout_marginTop="5dp"
-                android:background="@color/shimmer_color"
+                android:text="@{price}"
                 android:textAppearance="?attr/textAppearanceHeadline4"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@id/product_rating_bar"
@@ -83,15 +92,14 @@
                 android:layout_marginHorizontal="@dimen/app_margin"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="10dp"
-                android:backgroundTint="@color/shimmer_color"
                 android:isIndicator="true"
                 android:numStars="5"
+                android:rating="@{product.getRate()}"
                 android:scaleX="1.1"
                 android:scaleY="1.1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/new_product_price" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </com.facebook.shimmer.ShimmerFrameLayout>
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+</layout>

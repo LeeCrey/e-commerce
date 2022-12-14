@@ -53,7 +53,7 @@
             <!--     CATEGORIES       -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/category_list"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:paddingHorizontal="5dp"
@@ -65,7 +65,7 @@
             <!--   PRODUCTS   -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/products_recycler_view"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -105,9 +105,36 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/title_recommended" />
+
+            <com.robertlevonyan.views.customfloatingactionbutton.FloatingLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:backgroundTint="@color/primary"
+                    app:fabIcon="@drawable/ic_add"
+                    app:fabType="circle" />
+
+                <com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton
+                    android:id="@+id/show_buttons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:backgroundTint="@color/primary"
+                    app:fabIcon="@drawable/ic_add"
+                    app:fabType="circle" />
+
+            </com.robertlevonyan.views.customfloatingactionbutton.FloatingLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

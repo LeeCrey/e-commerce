@@ -9,16 +9,24 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 @JsonRootName(value = "customer")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Customer {
+    @JsonProperty("id")
+    private Integer id;
+
     @JsonProperty("first_name")
     private String firstName;
+
     @JsonProperty("last_name")
     private String lastName;
+
     @JsonProperty("email")
     private String email;
+
     @JsonProperty("password")
     private String password;
+
     @JsonProperty("password_confirmation")
     private String passwordConfirmation;
+
     @JsonProperty("profile_image")
     private String profileImageUrl;
 
@@ -87,5 +95,9 @@ public class Customer {
         this.firstName = firstName;
         this.lastName = lastName;
         return this;
+    }
+
+    public Integer getId() {
+        return id;
     }
 }

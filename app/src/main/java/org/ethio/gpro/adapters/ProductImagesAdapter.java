@@ -15,13 +15,12 @@ import com.squareup.picasso.Picasso;
 import org.ethio.gpro.R;
 
 import java.util.List;
-import java.util.Objects;
 
 public class ProductImagesAdapter extends PagerAdapter {
     private final LayoutInflater inflater;
     private final List<String> imagesUrl;
 
-    public ProductImagesAdapter(Context context, @NonNull List<String> urls) {
+    public ProductImagesAdapter(@NonNull Context context, @NonNull List<String> urls) {
         inflater = LayoutInflater.from(context);
         imagesUrl = urls;
     }
@@ -33,7 +32,7 @@ public class ProductImagesAdapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return view == (RelativeLayout) object;
+        return view == object;
     }
 
     @NonNull
@@ -43,7 +42,8 @@ public class ProductImagesAdapter extends PagerAdapter {
         ImageView imageView = itemView.findViewById(R.id.product_image);
         Picasso.get().load(imagesUrl.get(position))
                 .into(imageView);
-        Objects.requireNonNull(container).addView(itemView);
+        container.addView(itemView);
+
         return itemView;
     }
 

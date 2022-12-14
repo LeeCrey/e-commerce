@@ -7,14 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.card.MaterialCardView;
-
 import org.ethio.gpro.R;
 import org.ethio.gpro.callbacks.ProductCallBackInterface;
+import org.ethio.gpro.helpers.LocaleHelper;
 import org.ethio.gpro.models.Category;
 import org.ethio.gpro.viewholders.CategoryViewHolder;
 
@@ -40,6 +40,7 @@ public class CategoryAdapter extends ListAdapter<Category, CategoryViewHolder> {
     private final boolean loadShimmer = true;
     private int selectedCategoryPosition;
     private ProductCallBackInterface callBackInterface;
+    private final boolean isAmharic;
 
     public CategoryAdapter(final Activity activity) {
         super(DIFF_CALC_CALLBACK);
@@ -47,6 +48,8 @@ public class CategoryAdapter extends ListAdapter<Category, CategoryViewHolder> {
         inflater = LayoutInflater.from(activity);
         context = activity.getApplicationContext();
         selectedCategoryPosition = 0;
+
+        isAmharic = LocaleHelper.isAmharic(activity);
     }
 
     @NonNull
@@ -58,7 +61,7 @@ public class CategoryAdapter extends ListAdapter<Category, CategoryViewHolder> {
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) view.getLayoutParams();
 
         // event ...
-        final MaterialCardView cardView = (MaterialCardView) view;
+        final CardView cardView = (CardView) view;
 //        cardView.setOnLongClickListener(v -> callBackInterface.onCategorySelected(vh.getAdapterPosition()));
         cardView.setOnClickListener(v -> callBackInterface.onCategorySelected(vh.getAdapterPosition()));
 
@@ -67,7 +70,7 @@ public class CategoryAdapter extends ListAdapter<Category, CategoryViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
-        holder.bindView(getItem(position), context);
+        holder.bindView(getItem(position), context, isAmharic);
     }
 
     public void setCallBack(ProductCallBackInterface callBack) {

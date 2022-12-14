@@ -3,10 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="org.ethio.gpro">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -17,19 +19,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GPro"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        tools:replace="android:theme">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="" />
+
         <activity
             android:name=".ui.MainActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".CustomActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
+            <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
+
+            <nav-graph android:value="@navigation/mobile_navigation" />
         </activity>
     </application>
 

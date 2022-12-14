@@ -2,8 +2,6 @@ package org.ethio.gpro.models.responses;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import org.ethio.gpro.models.Customer;
-
 public class SessionResponse {
     @JsonProperty("full_name")
     private String fullName;

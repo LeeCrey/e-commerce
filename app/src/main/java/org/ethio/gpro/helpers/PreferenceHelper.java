@@ -82,4 +82,8 @@ public class PreferenceHelper {
         SharedPreferences pref = context.getSharedPreferences(PREFS_FILE, PREFS_MODE);
         return pref.getString(fullName, null);
     }
+
+    public static SharedPreferences getSharePref(Context context) {
+        return context.getSharedPreferences(PREFS_FILE, PREFS_MODE);
+    }
 }

@@ -18,13 +18,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import org.ethio.gpro.R;
-import org.ethio.gpro.callbacks.MainActivityCallBackInterface;
+import org.ethio.gpro.helpers.PreferenceHelper;
 import org.ethio.gpro.viewmodels.account.SessionsViewModel;
 
 
 public class ProfileFragment extends Fragment implements MenuProvider {
     private NavController navController;
-    private MainActivityCallBackInterface callBackInterface;
     private SessionsViewModel sessionsViewModel;
 
     @Override
@@ -37,7 +36,6 @@ public class ProfileFragment extends Fragment implements MenuProvider {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         navController = Navigation.findNavController(view);
         sessionsViewModel = new ViewModelProvider(this).get(SessionsViewModel.class);
-        callBackInterface = (MainActivityCallBackInterface) requireActivity();
 
         //observers
         sessionsViewModel.getLogoutResult().observe(getViewLifecycleOwner(), sessionResponse -> {
@@ -45,12 +43,8 @@ public class ProfileFragment extends Fragment implements MenuProvider {
                 return;
             }
 
-            if (sessionResponse.getOkay()) {
-                callBackInterface.logout();
-            } else {
-                // when expired token
-                callBackInterface.logout();
-            }
+            PreferenceHelper.clearPref(requireActivity());
+            navController.navigateUp();
         });
         // menu host
         requireActivity().addMenuProvider(this, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
@@ -62,7 +56,6 @@ public class ProfileFragment extends Fragment implements MenuProvider {
 
         navController = null;
         sessionsViewModel = null;
-        callBackInterface = null;
     }
 
     @Override

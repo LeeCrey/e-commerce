@@ -65,7 +65,6 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         callBack = (MainActivityCallBackInterface) requireActivity();
-        callBack.showToolBar();
         viewModel = new ViewModelProvider(this).get(HomeFragmentViewModel.class);
         navController = Navigation.findNavController(view);
 
@@ -82,8 +81,11 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
         initTrending();
         productAdapter = ProductHelper.initProducts(this, productRecyclerView, true, false);
         productAdapter.setCallBack(this);
+        productAdapter.setCalculateProductWidth(false);
+        productAdapter.setHeight(callBack.getScreenHeight());
         recommendedAdapter = ProductHelper.initRecommendedProducts(this, recommendedRecyclerView);
         recommendedAdapter.setCallBack(this);
+        recommendedAdapter.setCalculateProductWidth(true);
 
         // event list...
         swipeRefreshLayout.setOnRefreshListener(() -> {
@@ -91,6 +93,7 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
             viewModel.makeCategoryRequest();
             swipeRefreshLayout.setRefreshing(false);
         });
+        seeAll.setOnClickListener(v -> navController.navigate(R.id.open_recommended_products));
 
         // handlers
         handlerThread = new HandlerThread("customUiHandler");
@@ -116,7 +119,6 @@ public class HomeFragment extends Fragment implements MenuProvider, ProductCallB
         if (callBack.getAuthorizationToken() == null) {
             requireActivity().addMenuProvider(this, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
         }
-        callBack.setCurrentUser();
 
         showRecyclerViewsWithDelay();
     }
